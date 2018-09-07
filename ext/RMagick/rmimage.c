@@ -6232,11 +6232,11 @@ Image_export_pixels_to_str(int argc, VALUE *argv, VALUE self)
         case FloatPixel:
             sz = sizeof(float);
             break;
-        case IntegerPixel:
-            sz = sizeof(unsigned int);
-            break;
         case LongPixel:
             sz = sizeof(unsigned long);
+            break;
+        case LongLongPixel:
+            sz = sizeof(unsigned long long);
             break;
         case QuantumPixel:
             sz = sizeof(Quantum);
@@ -7398,11 +7398,11 @@ Image_import_pixels(int argc, VALUE *argv, VALUE self)
             case ShortPixel:
                 type_sz = sizeof(unsigned short);
                 break;
-            case IntegerPixel:
-                type_sz = sizeof(unsigned int);
-                break;
             case LongPixel:
                 type_sz = sizeof(unsigned long);
+                break;
+            case LongLongPixel:
+                type_sz = sizeof(unsigned long long);
                 break;
             case DoublePixel:
                 type_sz = sizeof(double);
