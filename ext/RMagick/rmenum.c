@@ -549,7 +549,7 @@ CompositeOperator_name(CompositeOperator op)
 #if defined(HAVE_ENUM_MATHEMATICSCOMPOSITEOP)
         ENUM_TO_NAME(MathematicsCompositeOp)
 #endif
-        ENUM_TO_NAME(MinusCompositeOp)
+        ENUM_TO_NAME(MinusDstCompositeOp)
         ENUM_TO_NAME(ModulateCompositeOp)
         ENUM_TO_NAME(MultiplyCompositeOp)
         ENUM_TO_NAME(OutCompositeOp)

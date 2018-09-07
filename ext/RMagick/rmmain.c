@@ -1051,7 +1051,7 @@ Init_RMagick2(void)
 #endif
         ENUMERATOR(LinearLightCompositeOp)
         ENUMERATOR(LuminizeCompositeOp)
-        ENUMERATOR(MinusCompositeOp)
+        ENUMERATOR(MinusDstCompositeOp)
         ENUMERATOR(ModulateCompositeOp)
         ENUMERATOR(MultiplyCompositeOp)
         ENUMERATOR(OutCompositeOp)

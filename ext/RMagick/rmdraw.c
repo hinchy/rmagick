@@ -1239,7 +1239,7 @@ Draw_composite(int argc, VALUE *argv, VALUE self)
             case LuminizeCompositeOp:
                 op = "Luminize";
                 break;
-            case MinusCompositeOp:
+            case MinusDstCompositeOp:
                 op = "Minus";
                 break;
             case ModulateCompositeOp:
