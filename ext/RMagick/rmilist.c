@@ -603,11 +603,7 @@ ImageList_mosaic(VALUE self)
     exception = AcquireExceptionInfo();
     images = images_from_imagelist(self);
 
-#if defined(HAVE_ENUM_MOSAICLAYER)
     new_image = MergeImageLayers(images, MosaicLayer, exception);
-#else
-    new_image = MosaicImages(images, exception);
-#endif
 
     rm_split(images);
     rm_check_exception(exception, new_image, DestroyOnError);
