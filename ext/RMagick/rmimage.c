@@ -3998,7 +3998,7 @@ Image_constitute(VALUE class, VALUE width_arg, VALUE height_arg
     exception = AcquireExceptionInfo();
 
     // This is based on ConstituteImage in IM 5.5.7
-    image = AcquireImage(NULL);
+    image = AcquireImage(NULL, exception);
     if (!image)
     {
         rb_raise(rb_eNoMemError, "not enough memory to continue.");
@@ -9324,6 +9324,7 @@ Image_initialize(int argc, VALUE *argv, VALUE self)
     VALUE info_obj;
     Image *image;
     unsigned long cols, rows;
+    ExceptionInfo *exception;
 
     switch (argc)
     {
@@ -9342,9 +9343,12 @@ Image_initialize(int argc, VALUE *argv, VALUE self)
     info_obj = rm_info_new();
     Data_Get_Struct(info_obj, Info, info);
 
-    image = AcquireImage(info);
+    exception = AcquireExceptionInfo();
+
+    image = AcquireImage(info, exception);
     if (!image)
     {
+        (void) DestroyExceptionInfo(exception);
         rb_raise(rb_eNoMemError, "not enough memory to continue");
     }
 
@@ -9367,6 +9371,8 @@ Image_initialize(int argc, VALUE *argv, VALUE self)
     {
         (void) rb_funcall(fill, rm_ID_fill, 1, self);
     }
+
+    (void) DestroyExceptionInfo(exception);
 
     RB_GC_GUARD(fill);
     RB_GC_GUARD(info_obj);
