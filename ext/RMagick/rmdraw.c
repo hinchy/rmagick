@@ -1026,7 +1026,7 @@ VALUE Draw_annotate(
 
     magick_clone_string(&draw->info->geometry, geometry_str);
 
-    (void) AnnotateImage(image, draw->info);
+    (void) AnnotateImage(image, draw->info, exception);
 
     magick_free(draw->info->text);
     draw->info->text = NULL;
