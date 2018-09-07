@@ -1081,7 +1081,7 @@ VALUE
 Image_background_color(VALUE self)
 {
     Image *image = rm_check_destroyed(self);
-    return rm_pixelpacket_to_color_name(image, &image->background_color);
+    return rm_pixelinfo_to_color_name(image, &image->background_color);
 }
 
 
@@ -1099,7 +1099,7 @@ VALUE
 Image_background_color_eq(VALUE self, VALUE color)
 {
     Image *image = rm_check_frozen(self);
-    Color_to_PixelPacket(&image->background_color, color);
+    Color_to_PixelInfo(&image->background_color, color);
     return self;
 }
 
@@ -1866,7 +1866,7 @@ static VALUE
 border(int bang, VALUE self, VALUE width, VALUE height, VALUE color)
 {
     Image *image, *new_image;
-    PixelPacket old_border;
+    PixelInfo old_border;
     ExceptionInfo *exception;
     RectangleInfo rect;
 
@@ -1878,7 +1878,7 @@ border(int bang, VALUE self, VALUE width, VALUE height, VALUE color)
 
     // Save current border color - we'll want to restore it afterwards.
     old_border = image->border_color;
-    Color_to_PixelPacket(&image->border_color, color);
+    Color_to_PixelInfo(&image->border_color, color);
 
     exception = AcquireExceptionInfo();
     new_image = BorderImage(image, &rect, exception);
@@ -1959,7 +1959,7 @@ VALUE
 Image_border_color(VALUE self)
 {
     Image *image = rm_check_destroyed(self);
-    return rm_pixelpacket_to_color_name(image, &image->border_color);
+    return rm_pixelinfo_to_color_name(image, &image->border_color);
 }
 
 
@@ -1977,7 +1977,7 @@ VALUE
 Image_border_color_eq(VALUE self, VALUE color)
 {
     Image *image = rm_check_frozen(self);
-    Color_to_PixelPacket(&image->border_color, color);
+    Color_to_PixelInfo(&image->border_color, color);
     return self;
 }
 
@@ -2619,7 +2619,7 @@ Image_color_histogram(VALUE self)
     hash = rb_hash_new();
     for (x = 0; x < colors; x++)
     {
-        pixel = Pixel_from_PixelPacket(&histogram[x].pixel);
+        pixel = Pixel_from_PixelInfo(&histogram[x].pixel);
         (void) rb_hash_aset(hash, pixel, ULONG2NUM((unsigned long)histogram[x].count));
     }
 
@@ -2797,9 +2797,9 @@ Image_color_flood_fill( VALUE self, VALUE target_color, VALUE fill_color
                         , VALUE xv, VALUE yv, VALUE method)
 {
     Image *image, *new_image;
-    PixelPacket target;
+    PixelInfo target;
     DrawInfo *draw_info;
-    PixelPacket fill;
+    PixelInfo fill;
     long x, y;
     int fill_method;
 
@@ -2807,8 +2807,8 @@ Image_color_flood_fill( VALUE self, VALUE target_color, VALUE fill_color
 
     // The target and fill args can be either a color name or
     // a Magick::Pixel.
-    Color_to_PixelPacket(&target, target_color);
-    Color_to_PixelPacket(&fill, fill_color);
+    Color_to_PixelInfo(&target, target_color);
+    Color_to_PixelInfo(&fill, fill_color);
 
     x = NUM2LONG(xv);
     y = NUM2LONG(yv);
@@ -2886,7 +2886,7 @@ Image_colorize(int argc, VALUE *argv, VALUE self)
     Image *image, *new_image;
     double red, green, blue, matte;
     char opacity[50];
-    PixelPacket target;
+    PixelInfo target;
     ExceptionInfo *exception;
 
     image = rm_check_destroyed(self);
@@ -2896,7 +2896,7 @@ Image_colorize(int argc, VALUE *argv, VALUE self)
         red   = floor(100*NUM2DBL(argv[0])+0.5);
         green = floor(100*NUM2DBL(argv[1])+0.5);
         blue  = floor(100*NUM2DBL(argv[2])+0.5);
-        Color_to_PixelPacket(&target, argv[3]);
+        Color_to_PixelInfo(&target, argv[3]);
         sprintf(opacity, "%f/%f/%f", red, green, blue);
     }
     else if (argc == 5)
@@ -2905,7 +2905,7 @@ Image_colorize(int argc, VALUE *argv, VALUE self)
         green = floor(100*NUM2DBL(argv[1])+0.5);
         blue  = floor(100*NUM2DBL(argv[2])+0.5);
         matte = floor(100*NUM2DBL(argv[3])+0.5);
-        Color_to_PixelPacket(&target, argv[4]);
+        Color_to_PixelInfo(&target, argv[4]);
         sprintf(opacity, "%f/%f/%f/%f", red, green, blue, matte);
     }
     else
@@ -2946,7 +2946,7 @@ Image_colormap(int argc, VALUE *argv, VALUE self)
 {
     Image *image;
     unsigned long idx;
-    PixelPacket color, new_color;
+    PixelInfo color, new_color;
 
     image = rm_check_destroyed(self);
 
@@ -2975,7 +2975,7 @@ Image_colormap(int argc, VALUE *argv, VALUE self)
         {
             rb_raise(rb_eIndexError, "index out of range");
         }
-        return rm_pixelpacket_to_color_name(image, &image->colormap[idx]);
+        return rm_pixelinfo_to_color_name(image, &image->colormap[idx]);
     }
 
     // This is a "set" operation. Things are different.
@@ -2984,24 +2984,24 @@ Image_colormap(int argc, VALUE *argv, VALUE self)
 
     // Replace with new color? The arg can be either a color name or
     // a Magick::Pixel.
-    Color_to_PixelPacket(&new_color, argv[1]);
+    Color_to_PixelInfo(&new_color, argv[1]);
 
     // Handle no colormap or current colormap too small.
     if (!image->colormap || idx > image->colors-1)
     {
-        PixelPacket black;
+        PixelInfo black;
         unsigned long i;
 
         memset(&black, 0, sizeof(black));
 
         if (!image->colormap)
         {
-            image->colormap = (PixelPacket *)magick_safe_malloc((idx+1), sizeof(PixelPacket));
+            image->colormap = (PixelInfo *)magick_safe_malloc((idx+1), sizeof(PixelInfo));
             image->colors = 0;
         }
         else
         {
-            image->colormap = (PixelPacket *)magick_safe_realloc(image->colormap, (idx+1), sizeof(PixelPacket));
+            image->colormap = (PixelInfo *)magick_safe_realloc(image->colormap, (idx+1), sizeof(PixelInfo));
         }
 
         for (i = image->colors; i < idx; i++)
@@ -3015,7 +3015,7 @@ Image_colormap(int argc, VALUE *argv, VALUE self)
     color = image->colormap[idx];
     image->colormap[idx] = new_color;
 
-    return rm_pixelpacket_to_color_name(image, &color);
+    return rm_pixelinfo_to_color_name(image, &color);
 }
 
 /**
@@ -6692,7 +6692,7 @@ Image_frame(int argc, VALUE *argv, VALUE self)
     switch (argc)
     {
         case 7:
-            Color_to_PixelPacket(&image->matte_color, argv[6]);
+            Color_to_PixelInfo(&image->matte_color, argv[6]);
         case 6:
             frame_info.outer_bevel = NUM2LONG(argv[5]);
         case 5:
@@ -7212,7 +7212,7 @@ Image_get_pixels(VALUE self, VALUE x_arg, VALUE y_arg, VALUE cols_arg, VALUE row
     // Convert the PixelPackets to Magick::Pixel objects
     for (n = 0; n < size; n++)
     {
-        rb_ary_store(pixel_ary, n, Pixel_from_PixelPacket(&pixels[n]));
+        rb_ary_store(pixel_ary, n, Pixel_from_PixelInfo(&pixels[n]));
     }
 
     return pixel_ary;
@@ -8729,7 +8729,7 @@ VALUE
 Image_matte_color(VALUE self)
 {
     Image *image = rm_check_destroyed(self);
-    return rm_pixelpacket_to_color_name(image, &image->matte_color);
+    return rm_pixelinfo_to_color_name(image, &image->matte_color);
 }
 
 /**
@@ -8746,7 +8746,7 @@ VALUE
 Image_matte_color_eq(VALUE self, VALUE color)
 {
     Image *image = rm_check_frozen(self);
-    Color_to_PixelPacket(&image->matte_color, color);
+    Color_to_PixelInfo(&image->matte_color, color);
     return self;
 }
 
@@ -8769,13 +8769,13 @@ VALUE
 Image_matte_flood_fill(VALUE self, VALUE color, VALUE opacity, VALUE x_obj, VALUE y_obj, VALUE method_obj)
 {
     Image *image, *new_image;
-    PixelPacket target;
+    PixelInfo target;
     Quantum op;
     long x, y;
     PaintMethod method;
 
     image = rm_check_destroyed(self);
-    Color_to_PixelPacket(&target, color);
+    Color_to_PixelInfo(&target, color);
 
     op = APP2QUANTUM(opacity);
 
@@ -10003,7 +10003,7 @@ VALUE
 Image_pixel_color(int argc, VALUE *argv, VALUE self)
 {
     Image *image;
-    PixelPacket old_color, new_color, *pixel;
+    PixelInfo old_color, new_color, *pixel;
     ExceptionInfo *exception;
     long x, y;
     unsigned int set = False;
@@ -10020,7 +10020,7 @@ Image_pixel_color(int argc, VALUE *argv, VALUE self)
             set = True;
             // Replace with new color? The arg can be either a color name or
             // a Magick::Pixel.
-            Color_to_PixelPacket(&new_color, argv[2]);
+            Color_to_PixelInfo(&new_color, argv[2]);
         case 2:
             break;
         default:
@@ -10058,14 +10058,14 @@ Image_pixel_color(int argc, VALUE *argv, VALUE self)
         {
             old_color.opacity = OpaqueOpacity;
         }
-        return Pixel_from_PixelPacket(&old_color);
+        return Pixel_from_PixelInfo(&old_color);
     }
 
     // ImageMagick segfaults if the pixel location is out of bounds.
     // Do what IM does and return the background color.
     if (x < 0 || y < 0 || (unsigned long)x >= image->columns || (unsigned long)y >= image->rows)
     {
-        return Pixel_from_PixelPacket(&image->background_color);
+        return Pixel_from_PixelInfo(&image->background_color);
     }
 
     // Set the color of a pixel. Return previous color.
@@ -10115,7 +10115,7 @@ Image_pixel_color(int argc, VALUE *argv, VALUE self)
     (void) DestroyExceptionInfo(exception);
 #endif
 
-    return Pixel_from_PixelPacket(&old_color);
+    return Pixel_from_PixelInfo(&old_color);
 }
 
 
@@ -12855,7 +12855,7 @@ VALUE
 Image_splice(int argc, VALUE *argv, VALUE self)
 {
     Image *image, *new_image;
-    PixelPacket color, old_color;
+    PixelInfo color, old_color;
     RectangleInfo rectangle;
     ExceptionInfo *exception;
 
@@ -12869,7 +12869,7 @@ Image_splice(int argc, VALUE *argv, VALUE self)
             break;
         case 5:
             // Convert color argument to PixelPacket
-            Color_to_PixelPacket(&color, argv[4]);
+            Color_to_PixelInfo(&color, argv[4]);
             break;
         default:
             rb_raise(rb_eArgError, "wrong number of arguments (%d for 4 or 5)", argc);
@@ -13286,7 +13286,7 @@ Image_texture_flood_fill(VALUE self, VALUE color_obj, VALUE texture_obj
 {
     Image *image, *new_image;
     Image *texture_image;
-    PixelPacket color;
+    PixelInfo color;
     VALUE texture;
     DrawInfo *draw_info;
     long x, y;
@@ -13294,7 +13294,7 @@ Image_texture_flood_fill(VALUE self, VALUE color_obj, VALUE texture_obj
 
     image = rm_check_destroyed(self);
 
-    Color_to_PixelPacket(&color, color_obj);
+    Color_to_PixelInfo(&color, color_obj);
     texture = rm_cur_image(texture_obj);
     texture_image = rm_check_destroyed(texture);
 
@@ -14005,7 +14005,7 @@ VALUE
 Image_transparent_color(VALUE self)
 {
     Image *image = rm_check_destroyed(self);
-    return rm_pixelpacket_to_color_name(image, &image->transparent_color);
+    return rm_pixelinfo_to_color_name(image, &image->transparent_color);
 }
 
 
@@ -14023,7 +14023,7 @@ VALUE
 Image_transparent_color_eq(VALUE self, VALUE color)
 {
     Image *image = rm_check_frozen(self);
-    Color_to_PixelPacket(&image->transparent_color, color);
+    Color_to_PixelInfo(&image->transparent_color, color);
     return self;
 }
 

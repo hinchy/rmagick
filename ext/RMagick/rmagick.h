@@ -162,7 +162,7 @@
 
 
 typedef ImageInfo Info; /**< Make type name match class name */
-typedef PixelPacket Pixel; /**< Make type name match class name */
+typedef PixelInfo Pixel; /**< Make type name match class name */
 
 //! Montage
 typedef struct
@@ -185,7 +185,7 @@ typedef struct
     DrawInfo *info;             /**< the DrawInfo struct */
     VALUE primitives;           /**< the primitive string */
     struct TmpFile_Name *tmpfile_ary; /**< the tmp filenames */
-    PixelPacket shadow_color;   /**< PolaroidOptions#shadow_color */
+    PixelInfo shadow_color;   /**< PolaroidOptions#shadow_color */
 } Draw;             // make the type match the class name
 
 // Enum
@@ -1196,7 +1196,7 @@ extern VALUE  rm_enum_new(VALUE, VALUE, VALUE);
 // rmstruct.c
 extern VALUE  ChromaticityInfo_to_s(VALUE);
 extern VALUE  ChromaticityInfo_new(ChromaticityInfo *);
-extern void   Color_to_PixelPacket(PixelPacket *, VALUE);
+extern void   Color_to_PixelInfo(PixelInfo *, VALUE);
 extern void   Color_to_PixelInfoWithImage(Image *, PixelInfo *, VALUE);
 extern VALUE  Color_to_s(VALUE);
 extern VALUE  Import_ColorInfo(const ColorInfo *);
@@ -1212,7 +1212,6 @@ extern VALUE  Font_to_s(VALUE);
 extern VALUE  ImageType_new(ImageType);
 extern VALUE  InterlaceType_new(InterlaceType);
 extern VALUE  Pixel_from_PixelInfo(const PixelInfo *);
-extern VALUE  Pixel_from_PixelPacket(const PixelPacket *);
 extern void   Export_PointInfo(PointInfo *, VALUE);
 extern VALUE  Import_PointInfo(PointInfo *);
 extern VALUE  PrimaryInfo_to_s(VALUE);
@@ -1252,7 +1251,7 @@ extern void  *magick_realloc(void *, const size_t);
 extern void  *magick_safe_realloc(void *, const size_t, const size_t);
 extern void   magick_clone_string(char **, const char *);
 extern VALUE  rm_cur_image(VALUE);
-extern VALUE  rm_pixelpacket_to_color_name(Image *, PixelPacket *);
+extern VALUE  rm_pixelinfo_to_color_name(Image *, PixelInfo *);
 extern VALUE  rm_pixelpacket_to_color_name_info(Info *, PixelPacket *);
 extern VALUE  rm_no_freeze(VALUE);
 extern int    rm_strcasecmp(const char *, const char *);
