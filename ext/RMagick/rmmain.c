@@ -1238,7 +1238,6 @@ Init_RMagick2(void)
         ENUMERATOR(SouthWestGravity)
         ENUMERATOR(SouthGravity)
         ENUMERATOR(SouthEastGravity)
-        ENUMERATOR(StaticGravity)
     END_ENUM
 
     // ImageType constants
