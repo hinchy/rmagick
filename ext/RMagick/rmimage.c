@@ -2894,7 +2894,7 @@ Image_colorize(int argc, VALUE *argv, VALUE self)
     }
 
     exception = AcquireExceptionInfo();
-    new_image = ColorizeImage(image, opacity, target, exception);
+    new_image = ColorizeImage(image, opacity, &target, exception);
     rm_check_exception(exception, new_image, DestroyOnError);
 
     (void) DestroyExceptionInfo(exception);
