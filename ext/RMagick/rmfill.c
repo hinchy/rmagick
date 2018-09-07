@@ -224,7 +224,7 @@ vertical_fill(
     // Now copy the master row to each actual row.
     for (y = 0; y < image->rows; y++)
     {
-        PixelPacket *row_pixels;
+        Quantum *row_pixels;
 
 #if defined(HAVE_QUEUEAUTHENTICPIXELS)
         row_pixels = QueueAuthenticPixels(image, 0, (long int)y, image->columns, 1, exception);
