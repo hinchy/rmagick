@@ -1114,7 +1114,7 @@ Draw_composite(int argc, VALUE *argv, VALUE self)
 
         switch (cop)
         {
-            case AddCompositeOp:
+            case ModulusAddCompositeOp:
                 op = "Add";
                 break;
             case AtopCompositeOp:
