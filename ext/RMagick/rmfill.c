@@ -307,7 +307,7 @@ horizontal_fill(
 
     for (x = 0; x < image->columns; x++)
     {
-        PixelPacket *col_pixels;
+        Quantum *col_pixels;
 
 #if defined(HAVE_QUEUEAUTHENTICPIXELS)
         col_pixels = QueueAuthenticPixels(image, (long int)x, 0, 1, image->rows, exception);
