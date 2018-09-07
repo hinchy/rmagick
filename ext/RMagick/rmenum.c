@@ -526,7 +526,7 @@ CompositeOperator_name(CompositeOperator op)
 #if defined(HAVE_ENUM_DISTORTCOMPOSITEOP)
         ENUM_TO_NAME(DistortCompositeOp)
 #endif
-        ENUM_TO_NAME(DivideCompositeOp)
+        ENUM_TO_NAME(DivideDstCompositeOp)
         ENUM_TO_NAME(DstAtopCompositeOp)
         ENUM_TO_NAME(DstCompositeOp)
         ENUM_TO_NAME(DstInCompositeOp)

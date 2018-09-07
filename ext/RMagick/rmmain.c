@@ -1029,7 +1029,7 @@ Init_RMagick2(void)
 #if defined(HAVE_ENUM_DISTORTCOMPOSITEOP)
         ENUMERATOR(DistortCompositeOp)
 #endif
-        ENUMERATOR(DivideCompositeOp)
+        ENUMERATOR(DivideDstCompositeOp)
         ENUMERATOR(DstAtopCompositeOp)
         ENUMERATOR(DstCompositeOp)
         ENUMERATOR(DstInCompositeOp)
