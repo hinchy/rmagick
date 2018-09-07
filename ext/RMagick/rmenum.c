@@ -719,7 +719,7 @@ FilterType_name(FilterType type)
         ENUM_TO_NAME(BoxFilter)
         ENUM_TO_NAME(TriangleFilter)
         ENUM_TO_NAME(HermiteFilter)
-        ENUM_TO_NAME(HanningFilter)
+        ENUM_TO_NAME(HannFilter)
         ENUM_TO_NAME(HammingFilter)
         ENUM_TO_NAME(BlackmanFilter)
         ENUM_TO_NAME(GaussianFilter)
@@ -727,32 +727,29 @@ FilterType_name(FilterType type)
         ENUM_TO_NAME(CubicFilter)
         ENUM_TO_NAME(CatromFilter)
         ENUM_TO_NAME(MitchellFilter)
-        ENUM_TO_NAME(LanczosFilter)
-        ENUM_TO_NAME(BesselFilter)
+        ENUM_TO_NAME(JincFilter)
         ENUM_TO_NAME(SincFilter)
-#if defined(HAVE_ENUM_KAISERFILTER)
+        ENUM_TO_NAME(SincFastFilter)
         ENUM_TO_NAME(KaiserFilter)
-#endif
-#if defined(HAVE_ENUM_WELSHFILTER)
-        ENUM_TO_NAME(WelshFilter)
-#endif
-#if defined(HAVE_ENUM_PARZENFILTER)
+        ENUM_TO_NAME(WelchFilter)
         ENUM_TO_NAME(ParzenFilter)
-#endif
-#if defined(HAVE_ENUM_LAGRANGEFILTER)
-        ENUM_TO_NAME(LagrangeFilter)
-#endif
-#if defined(HAVE_ENUM_BOHMANFILTER)
         ENUM_TO_NAME(BohmanFilter)
-#endif
-#if defined(HAVE_ENUM_BARTLETTFILTER)
         ENUM_TO_NAME(BartlettFilter)
-#endif
-#if defined(HAVE_ENUM_SENTINELFILTER)
+        ENUM_TO_NAME(LagrangeFilter)
+        ENUM_TO_NAME(LanczosFilter)
+        ENUM_TO_NAME(LanczosSharpFilter)
+        ENUM_TO_NAME(Lanczos2Filter)
+        ENUM_TO_NAME(Lanczos2SharpFilter)
+        ENUM_TO_NAME(RobidouxFilter)
+        ENUM_TO_NAME(RobidouxSharpFilter)
+        ENUM_TO_NAME(CosineFilter)
+        ENUM_TO_NAME(SplineFilter)
+        ENUM_TO_NAME(LanczosRadiusFilter)
+        ENUM_TO_NAME(CubicSplineFilter)
+
         // not a real filter name - defeat gcc warning message
         case SentinelFilter:
             break;
-#endif
     }
 
     return "UndefinedFilter";
