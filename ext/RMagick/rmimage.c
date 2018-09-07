@@ -7936,12 +7936,12 @@ Image_level_colors(int argc, VALUE *argv, VALUE self)
             invert = RTEST(argv[2]);
 
         case 2:
-            Color_to_PixelInfo(image, &white_color, argv[1]);
-            Color_to_PixelInfo(image, &black_color, argv[0]);
+            Color_to_PixelInfoWithImage(image, &white_color, argv[1]);
+            Color_to_PixelInfoWithImage(image, &black_color, argv[0]);
             break;
 
         case 1:
-            Color_to_PixelInfo(image, &black_color, argv[0]);
+            Color_to_PixelInfoWithImage(image, &black_color, argv[0]);
             exception = AcquireExceptionInfo();
 
             GetPixelInfo(image, &white_color);
@@ -9594,8 +9594,8 @@ Image_opaque(VALUE self, VALUE target, VALUE fill)
     new_image = rm_clone_image(image);
 
     // Allow color name or Pixel
-    Color_to_PixelInfo(image, &target_pp, target);
-    Color_to_PixelInfo(image, &fill_pp, fill);
+    Color_to_PixelInfoWithImage(image, &target_pp, target);
+    Color_to_PixelInfoWithImage(image, &fill_pp, fill);
 
 #if defined(HAVE_OPAQUEPAINTIMAGECHANNEL)
     okay = OpaquePaintImageChannel(new_image, DefaultChannels, &target_pp, &fill_pp, MagickFalse);
@@ -9668,8 +9668,8 @@ Image_opaque_channel(int argc, VALUE *argv, VALUE self)
             invert = RTEST(argv[2]);
         case 2:
             // Allow color name or Pixel
-            Color_to_PixelInfo(image, &fill_pp, argv[1]);
-            Color_to_PixelInfo(image, &target_pp, argv[0]);
+            Color_to_PixelInfoWithImage(image, &fill_pp, argv[1]);
+            Color_to_PixelInfoWithImage(image, &target_pp, argv[0]);
             break;
         default:
             rb_raise(rb_eArgError, "wrong number of arguments (got %d, expected 2 or more)", argc);
@@ -9910,7 +9910,7 @@ Image_paint_transparent(int argc, VALUE *argv, VALUE self)
         case 2:
             opacity = APP2QUANTUM(argv[1]);
         case 1:
-            Color_to_PixelInfo(image, &color, argv[0]);
+            Color_to_PixelInfoWithImage(image, &color, argv[0]);
             break;
         default:
             rb_raise(rb_eArgError, "wrong number of arguments (%d for 1 to 4)", argc);
@@ -12788,7 +12788,7 @@ Image_sparse_color(int argc, VALUE *argv, VALUE self)
     {
         args[x++] = NUM2DBL(argv[n++]);
         args[x++] = NUM2DBL(argv[n++]);
-        Color_to_PixelInfo(NULL, &pp, argv[n++]);
+        Color_to_PixelInfoWithImage(NULL, &pp, argv[n++]);
         if (channels & RedChannel)
         {
             args[x++] = pp.red / QuantumRange;
@@ -13899,7 +13899,7 @@ Image_transparent(int argc, VALUE *argv, VALUE self)
         case 2:
             opacity = APP2QUANTUM(argv[1]);
         case 1:
-            Color_to_PixelInfo(image, &color, argv[0]);
+            Color_to_PixelInfoWithImage(image, &color, argv[0]);
             break;
         default:
             rb_raise(rb_eArgError, "wrong number of arguments (%d for 1 or 2)", argc);
@@ -13962,8 +13962,8 @@ Image_transparent_chroma(int argc, VALUE *argv, VALUE self)
         case 3:
             opacity = APP2QUANTUM(argv[2]);
         case 2:
-            Color_to_PixelInfo(image, &high, argv[1]);
-            Color_to_PixelInfo(image, &low, argv[0]);
+            Color_to_PixelInfoWithImage(image, &high, argv[1]);
+            Color_to_PixelInfoWithImage(image, &low, argv[0]);
             break;
         default:
             rb_raise(rb_eArgError, "wrong number of arguments (%d for 2, 3 or 4)", argc);
