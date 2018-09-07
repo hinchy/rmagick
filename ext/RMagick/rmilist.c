@@ -636,11 +636,7 @@ ImageList_optimize_layers(VALUE self, VALUE method)
     new_images2 = NULL;     // defeat "unused variable" message
 
     exception = AcquireExceptionInfo();
-#if defined(HAVE_TYPE_IMAGELAYERMETHOD)
-    VALUE_TO_ENUM(method, mthd, ImageLayerMethod);
-#else
-    VALUE_TO_ENUM(method, mthd, MagickLayerMethod);
-#endif
+    VALUE_TO_ENUM(method, mthd, LayerMethod);
     images = images_from_imagelist(self);
 
     switch (mthd)

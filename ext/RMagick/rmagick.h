@@ -155,17 +155,10 @@
 #endif
 
 // ImageLayerMethod replaced MagickLayerMethod starting with 6.3.6
-#if defined(HAVE_TYPE_IMAGELAYERMETHOD)
-#define LAYERMETHODTYPE ImageLayerMethod /**< layer method */
-#define CLASS_LAYERMETHODTYPE Class_ImageLayerMethod /**< layer method class */
-#define LAYERMETHODTYPE_NAME ImageLayerMethod_name /**< layer method name */
-#define LAYERMETHODTYPE_NEW  ImageLayerMethod_new /**< new layer method */
-#else
-#define LAYERMETHODTYPE MagickLayerMethod /**< layer method */
-#define CLASS_LAYERMETHODTYPE Class_MagickLayerMethod /**< layer method class */
-#define LAYERMETHODTYPE_NAME MagickLayerMethod_name /**< layer method name */
-#define LAYERMETHODTYPE_NEW  MagickLayerMethod_new /**< new layer method */
-#endif
+#define LAYERMETHODTYPE LayerMethod /**< layer method */
+#define CLASS_LAYERMETHODTYPE Class_LayerMethod /**< layer method class */
+#define LAYERMETHODTYPE_NAME LayerMethod_name /**< layer method name */
+#define LAYERMETHODTYPE_NEW  LayerMethod_new /**< new layer method */
 
 
 typedef ImageInfo Info; /**< Make type name match class name */

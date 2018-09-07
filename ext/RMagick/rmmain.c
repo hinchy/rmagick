@@ -1297,11 +1297,7 @@ Init_RMagick2(void)
     END_ENUM
 #endif
 
-#if defined(HAVE_TYPE_IMAGELAYERMETHOD)
-    DEF_ENUM(ImageLayerMethod)
-#else
-    DEF_ENUM(MagickLayerMethod)
-#endif
+    DEF_ENUM(LayerMethod)
         ENUMERATOR(UndefinedLayer)
         ENUMERATOR(CompareAnyLayer)
         ENUMERATOR(CompareClearLayer)
