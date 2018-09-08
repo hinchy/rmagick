@@ -1321,7 +1321,7 @@ Init_RMagick2(void)
         ENUMERATOR(MeanErrorPerPixelErrorMetric)
         ENUMERATOR(MeanSquaredErrorMetric)
         ENUMERATOR(PeakAbsoluteErrorMetric)
-        ENUMERATOR(PeakSignalToNoiseRatioMetric)
+        ENUMERATOR(PeakSignalToNoiseRatioErrorMetric)
         ENUMERATOR(RootMeanSquaredErrorMetric)
     END_ENUM
 
