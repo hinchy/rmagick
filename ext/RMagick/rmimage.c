@@ -9718,7 +9718,7 @@ Image_opaque_channel(int argc, VALUE *argv, VALUE self)
 VALUE
 Image_opaque_q(VALUE self)
 {
-    return has_attribute(self, IsOpaqueImage);
+    return has_attribute(self, IsImageOpaque);
 }
 
 
