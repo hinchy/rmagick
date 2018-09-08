@@ -7260,7 +7260,7 @@ has_attribute(VALUE self, MagickBooleanType (attr_test)(const Image *, Exception
 VALUE
 Image_gray_q(VALUE self)
 {
-    return has_attribute(self, (MagickBooleanType (*)(const Image *, ExceptionInfo *))IsGrayImage);
+    return has_attribute(self, (MagickBooleanType (*)(const Image *, ExceptionInfo *))IsImageGray);
 }
 
 
