@@ -1247,7 +1247,6 @@ Init_RMagick2(void)
         ENUMERATOR(TrueColorType)
         ENUMERATOR(ColorSeparationType)
         ENUMERATOR(OptimizeType)
-        ENUMERATOR(PaletteBilevelMatteType)
     END_ENUM
 
     // InterlaceType constants
