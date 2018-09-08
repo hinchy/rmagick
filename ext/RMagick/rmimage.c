@@ -8364,11 +8364,10 @@ Image_map(int argc, VALUE *argv, VALUE self)
     Image *map;
     VALUE map_obj, map_arg;
     unsigned int dither = MagickFalse;
+    ExceptionInfo *exception;
 
-#if defined(HAVE_REMAPIMAGE)
     QuantizeInfo quantize_info;
     rb_warning("Image#map is deprecated. Use Image#remap instead");
-#endif
 
     image = rm_check_destroyed(self);
 
@@ -8388,13 +8387,12 @@ Image_map(int argc, VALUE *argv, VALUE self)
 
     map_obj = rm_cur_image(map_arg);
     map = rm_check_destroyed(map_obj);
-#if defined(HAVE_REMAPIMAGE)
+
+    exception = AcquireExceptionInfo();
     GetQuantizeInfo(&quantize_info);
-    (void) RemapImage(&quantize_info, new_image, map);
-#else
-    (void) MapImage(new_image, map, dither);
-#endif
-    rm_check_image_exception(new_image, DestroyOnError);
+    (void) RemapImage(&quantize_info, new_image, map, exception);
+    CHECK_EXCEPTION()
+    (void) DestroyExceptionInfo(exception);
 
     RB_GC_GUARD(map_obj);
     RB_GC_GUARD(map_arg);
@@ -11151,9 +11149,9 @@ Image_reduce_noise(VALUE self, VALUE radius)
 VALUE
 Image_remap(int argc, VALUE *argv, VALUE self)
 {
-#if defined(HAVE_REMAPIMAGE) || defined(HAVE_AFFINITYIMAGE)
     Image *image, *remap_image;
     QuantizeInfo quantize_info;
+    ExceptionInfo *exception;
 
     image = rm_check_frozen(self);
     if (argc > 0)
@@ -11177,21 +11175,12 @@ Image_remap(int argc, VALUE *argv, VALUE self)
             break;
     }
 
-#if defined(HAVE_REMAPIMAGE)
-    (void) RemapImage(&quantize_info, image, remap_image);
-#else
-    (void) AffinityImage(&quantize_info, image, remap_image);
-#endif
-    rm_check_image_exception(image, RetainOnError);
+    exception = AcquireExceptionInfo();
+    (void) RemapImage(&quantize_info, image, remap_image, exception);
+    CHECK_EXCEPTION()
+    (void) DestroyExceptionInfo(exception);
 
     return self;
-#else
-    self = self;
-    argc = argc;
-    argv = argv;
-    rm_not_implemented();
-    return(VALUE)0;
-#endif
 }
 
 
