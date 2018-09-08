@@ -1246,7 +1246,6 @@ Init_RMagick2(void)
         ENUMERATOR(PaletteType)
         ENUMERATOR(TrueColorType)
         ENUMERATOR(ColorSeparationType)
-        ENUMERATOR(ColorSeparationMatteType)
         ENUMERATOR(OptimizeType)
         ENUMERATOR(PaletteBilevelMatteType)
     END_ENUM
