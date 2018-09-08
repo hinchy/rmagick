@@ -1315,7 +1315,7 @@ Init_RMagick2(void)
     END_ENUM
 
     DEF_ENUM(MetricType)
-        ENUMERATOR(UndefinedMetric)
+        ENUMERATOR(UndefinedErrorMetric)
         ENUMERATOR(AbsoluteErrorMetric)
         ENUMERATOR(MeanAbsoluteErrorMetric)
         ENUMERATOR(MeanErrorPerPixelMetric)
