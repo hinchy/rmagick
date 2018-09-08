@@ -1267,7 +1267,6 @@ Init_RMagick2(void)
         ENUMERATOR(BilinearInterpolatePixel)
         ENUMERATOR(IntegerInterpolatePixel)
         ENUMERATOR(MeshInterpolatePixel)
-        ENUMERATOR(NearestNeighborInterpolatePixel)
         ENUMERATOR(SplineInterpolatePixel)
     END_ENUM
 
