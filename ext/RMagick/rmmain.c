@@ -881,7 +881,6 @@ Init_RMagick2(void)
         ENUMERATOR(UndefinedAlphaChannel)
         ENUMERATOR(ActivateAlphaChannel)
         ENUMERATOR(DeactivateAlphaChannel)
-        ENUMERATOR(ResetAlphaChannel)  /* deprecated */
         ENUMERATOR(SetAlphaChannel)
 #if defined(HAVE_ENUM_REMOVEALPHACHANNEL)
         ENUMERATOR(RemoveAlphaChannel)
