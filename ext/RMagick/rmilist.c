@@ -457,18 +457,18 @@ ImageList_map(int argc, VALUE *argv, VALUE self)
     new_images = CloneImageList(images, exception);
     rm_split(images);
     rm_check_exception(exception, new_images, DestroyOnError);
-    (void) DestroyExceptionInfo(exception);
 
     rm_ensure_result(new_images);
 
     // Call ImageMagick
 #if defined(HAVE_REMAPIMAGES)
     GetQuantizeInfo(&quantize_info);
-    (void) RemapImages(&quantize_info, new_images, map);
+    (void) RemapImages(&quantize_info, new_images, map, exception);
 #else
     (void) MapImages(new_images, map, dither);
 #endif
-    rm_check_image_exception(new_images, DestroyOnError);
+    rm_check_exception(exception, new_images, DestroyOnError);
+    (void) DestroyExceptionInfo(exception);
 
     // Set @scene in new ImageList object to same value as in self.
     new_imagelist = rm_imagelist_from_images(new_images);
@@ -685,7 +685,7 @@ ImageList_optimize_layers(VALUE self, VALUE method)
             // mogrify supports -dither here. We don't.
 #if defined(HAVE_REMAPIMAGE)
             GetQuantizeInfo(&quantize_info);
-            (void) RemapImages(&quantize_info, new_images, NULL);
+            (void) RemapImages(&quantize_info, new_images, NULL, exception);
 #else
             (void) MapImages(new_images, NULL, 0);
 #endif
@@ -1053,9 +1053,9 @@ ImageList_quantize(int argc, VALUE *argv, VALUE self)
 VALUE
 ImageList_remap(int argc, VALUE *argv, VALUE self)
 {
-#if defined(HAVE_REMAPIMAGES) || defined(HAVE_AFFINITYIMAGES)
     Image *images, *remap_image = NULL;
     QuantizeInfo quantize_info;
+    ExceptionInfo *exception;
 
 
     if (argc > 0 && argv[0] != Qnil)
@@ -1078,22 +1078,14 @@ ImageList_remap(int argc, VALUE *argv, VALUE self)
 
     images = images_from_imagelist(self);
 
-#if defined(HAVE_REMAPIMAGE)
-    (void) RemapImages(&quantize_info, images, remap_image);
-#else
-    (void) AffinityImages(&quantize_info, images, remap_image);
-#endif
-    rm_check_image_exception(images, RetainOnError);
+    exception = AcquireExceptionInfo();
+    (void) RemapImages(&quantize_info, images, remap_image, exception);
+    rm_check_exception(exception, images, RetainOnError);
+    (void) DestroyExceptionInfo(exception);
+
     rm_split(images);
 
     return self;
-#else
-    self = self;
-    argc = argc;
-    argv = argv;
-    rm_not_implemented();
-    return(VALUE)0;
-#endif
 }
 
 
