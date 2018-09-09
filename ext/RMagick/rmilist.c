@@ -299,6 +299,7 @@ ImageList_display(VALUE self)
     Image *images;
     Info *info;
     VALUE info_obj;
+    ExceptionInfo *exception;
 
     // Create a new Info object to use with this call
     info_obj = rm_info_new();
@@ -307,9 +308,12 @@ ImageList_display(VALUE self)
     // Convert the images array to an images sequence.
     images = images_from_imagelist(self);
 
-    (void) DisplayImages(info, images);
+    exception = AcquireExceptionInfo();
+    (void) DisplayImages(info, images, exception);
+    rm_check_exception(exception, images, RetainOnError);
+    (void) DestroyExceptionInfo(exception);
+
     rm_split(images);
-    rm_check_image_exception(images, RetainOnError);
 
     RB_GC_GUARD(info_obj);
 

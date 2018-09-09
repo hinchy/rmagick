@@ -5125,6 +5125,7 @@ Image_display(VALUE self)
     Image *image;
     Info *info;
     VALUE info_obj;
+    ExceptionInfo *exception;
 
     image = rm_check_destroyed(self);
 
@@ -5136,8 +5137,10 @@ Image_display(VALUE self)
     info_obj = rm_info_new();
     Data_Get_Struct(info_obj, Info, info);
 
-    (void) DisplayImages(info, image);
-    rm_check_image_exception(image, RetainOnError);
+    exception = AcquireExceptionInfo();
+    (void) DisplayImages(info, image, exception);
+    rm_check_exception(exception, image, RetainOnError);
+    (void) DestroyExceptionInfo(exception);
 
     RB_GC_GUARD(info_obj);
 
