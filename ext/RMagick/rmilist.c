@@ -45,6 +45,7 @@ ImageList_animate(int argc, VALUE *argv, VALUE self)
     Image *images;
     Info *info;
     VALUE info_obj;
+    ExceptionInfo *exception;
 
     if (argc > 1)
     {
@@ -70,8 +71,12 @@ ImageList_animate(int argc, VALUE *argv, VALUE self)
     }
 
     Data_Get_Struct(info_obj, Info, info);
-    (void) AnimateImages(info, images);
-    rm_check_image_exception(images, RetainOnError);
+
+    exception = AcquireExceptionInfo();
+    (void) AnimateImages(info, images, exception);
+    rm_check_exception(exception, images, RetainOnError);
+    (void) DestroyExceptionInfo(exception);
+
     rm_split(images);
 
     RB_GC_GUARD(info_obj);
