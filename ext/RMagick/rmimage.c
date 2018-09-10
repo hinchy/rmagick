@@ -2815,10 +2815,10 @@ Image_color_flood_fill( VALUE self, VALUE target_color, VALUE fill_color
 
     new_image = rm_clone_image(image);
 
-#if defined(HAVE_FLOODFILLPAINTIMAGE)
     {
         PixelInfo target_mpp;
         MagickBooleanType invert;
+        ExceptionInfo *exception;
 
         GetPixelInfo(new_image, &target_mpp);
         if (fill_method == FillToBorderMethod)
@@ -2836,11 +2836,10 @@ Image_color_flood_fill( VALUE self, VALUE target_color, VALUE fill_color
             target_mpp.blue  = (MagickRealType) target.blue;
         }
 
-        (void) FloodfillPaintImage(new_image, DefaultChannels, draw_info, &target_mpp, x, y, invert);
+        exception = AcquireExceptionInfo();
+        (void) FloodfillPaintImage(new_image, draw_info, &target_mpp, x, y, invert, exception);
+        (void) DestroyExceptionInfo(exception);
     }
-#else
-    (void) ColorFloodfillImage(new_image, draw_info, target, x, y, (PaintMethod)fill_method);
-#endif
     // No need to check for error
 
     (void) DestroyDrawInfo(draw_info);
@@ -8761,6 +8760,7 @@ Image_matte_flood_fill(VALUE self, VALUE color, VALUE opacity, VALUE x_obj, VALU
     Quantum op;
     long x, y;
     PaintMethod method;
+    ExceptionInfo *exception;
 
     image = rm_check_destroyed(self);
     Color_to_PixelInfo(&target, color);
@@ -8784,7 +8784,6 @@ Image_matte_flood_fill(VALUE self, VALUE color, VALUE opacity, VALUE x_obj, VALU
 
     new_image = rm_clone_image(image);
 
-#if defined(HAVE_FLOODFILLPAINTIMAGE)
     {
         DrawInfo *draw_info;
         PixelInfo target_mpp;
@@ -8813,12 +8812,11 @@ Image_matte_flood_fill(VALUE self, VALUE color, VALUE opacity, VALUE x_obj, VALU
             target_mpp.blue  = (MagickRealType) target.blue;
         }
 
-        (void) FloodfillPaintImage(new_image, OpacityChannel, draw_info, &target_mpp, x, y, invert);
+        exception = AcquireExceptionInfo();
+        (void) FloodfillPaintImage(new_image, draw_info, &target_mpp, x, y, invert, exception);
     }
-#else
-    (void) MatteFloodfillImage(new_image, target, op, x, y, method);
-#endif
-    rm_check_image_exception(new_image, DestroyOnError);
+    rm_check_exception(exception, new_image, DestroyOnError);
+    (void) DestroyExceptionInfo(exception);
 
     return rm_image_new(new_image);
 }
@@ -13292,6 +13290,7 @@ Image_texture_flood_fill(VALUE self, VALUE color_obj, VALUE texture_obj
     DrawInfo *draw_info;
     long x, y;
     PaintMethod method;
+    ExceptionInfo *exception;
 
     image = rm_check_destroyed(self);
 
@@ -13324,8 +13323,8 @@ Image_texture_flood_fill(VALUE self, VALUE color_obj, VALUE texture_obj
     draw_info->fill_pattern = rm_clone_image(texture_image);
     new_image = rm_clone_image(image);
 
+    exception = AcquireExceptionInfo();
 
-#if defined(HAVE_FLOODFILLPAINTIMAGE)
     {
         PixelInfo color_mpp;
         MagickBooleanType invert;
@@ -13346,15 +13345,12 @@ Image_texture_flood_fill(VALUE self, VALUE color_obj, VALUE texture_obj
             color_mpp.blue  = (MagickRealType) color.blue;
         }
 
-        (void) FloodfillPaintImage(new_image, DefaultChannels, draw_info, &color_mpp, x, y, invert);
+        (void) FloodfillPaintImage(new_image, draw_info, &color_mpp, x, y, invert, exception);
     }
 
-#else
-    (void) ColorFloodfillImage(new_image, draw_info, color, x, y, method);
-#endif
-
     (void) DestroyDrawInfo(draw_info);
-    rm_check_image_exception(new_image, DestroyOnError);
+    rm_check_exception(exception, new_image, DestroyOnError);
+    (void) DestroyExceptionInfo(exception);
 
     RB_GC_GUARD(texture);
 
