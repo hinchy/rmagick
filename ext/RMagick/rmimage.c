@@ -9007,6 +9007,7 @@ Image_modulate(int argc, VALUE *argv, VALUE self)
     pct_saturation = 100.0,
     pct_hue        = 100.0;
     char modulate[100];
+    ExceptionInfo *exception;
 
     image = rm_check_destroyed(self);
     switch (argc)
@@ -9033,8 +9034,10 @@ Image_modulate(int argc, VALUE *argv, VALUE self)
 
     new_image = rm_clone_image(image);
 
-    (void) ModulateImage(new_image, modulate);
-    rm_check_image_exception(new_image, DestroyOnError);
+    exception = AcquireExceptionInfo();
+    (void) ModulateImage(new_image, modulate, exception);
+    rm_check_exception(exception, new_image, DestroyOnError);
+    (void) DestroyExceptionInfo(exception);
 
     return rm_image_new(new_image);
 }
