@@ -10989,7 +10989,7 @@ Image_recolor(VALUE self, VALUE color_matrix)
     kernel_info = AcquireKernelInfo("1", exception);
     if (kernel_info == (KernelInfo *) NULL) {
         (void) DestroyExceptionInfo(exception);
-        return ((Image *) NULL);
+        return Qnil;
     }
     kernel_info->width = order;
     kernel_info->height = order;
