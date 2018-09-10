@@ -8605,9 +8605,8 @@ Image_mask(int argc, VALUE *argv, VALUE self)
         }
 
         // The following section is copied from mogrify.c (6.2.8-8)
-#if defined(HAVE_SYNCAUTHENTICPIXELS)
         exception = AcquireExceptionInfo();
-#endif
+
         for (y = 0; y < (long) clip_mask->rows; y++)
         {
 #if defined(HAVE_GETAUTHENTICPIXELS)
@@ -8641,12 +8640,11 @@ Image_mask(int argc, VALUE *argv, VALUE self)
             rm_check_image_exception(clip_mask, DestroyOnError);
 #endif
         }
-#if defined(HAVE_SYNCAUTHENTICPIXELS)
-        (void) DestroyExceptionInfo(exception);
-#endif
 
-        SetImageStorageClass(clip_mask, DirectClass);
-        rm_check_image_exception(clip_mask, DestroyOnError);
+        SetImageStorageClass(clip_mask, DirectClass, exception);
+        rm_check_exception(exception, clip_mask, DestroyOnError);
+
+        (void) DestroyExceptionInfo(exception);
 
         clip_mask->matte = MagickTrue;
 
@@ -13093,7 +13091,7 @@ Image_class_type_eq(VALUE self, VALUE new_class_type)
         (void) QuantizeImage(&qinfo, image);
     }
 
-    (void) SetImageStorageClass(image, class_type);
+    (void) SetImageStorageClass(image, class_type, exception);
 
     (void) DestroyExceptionInfo(exception);
 
@@ -13131,6 +13129,7 @@ Image_store_pixels(VALUE self, VALUE x_arg, VALUE y_arg, VALUE cols_arg
     long x, y;
     unsigned long cols, rows;
     unsigned int okay;
+    ExceptionInfo *exception;
 
     image = rm_check_destroyed(self);
 
@@ -13147,21 +13146,19 @@ Image_store_pixels(VALUE self, VALUE x_arg, VALUE y_arg, VALUE cols_arg
     size = (long)(cols * rows);
     rm_check_ary_len(new_pixels, size);
 
-    okay = SetImageStorageClass(image, DirectClass);
-    rm_check_image_exception(image, RetainOnError);
+    exception = AcquireExceptionInfo();
+
+    okay = SetImageStorageClass(image, DirectClass, exception);
+    rm_check_exception(exception, image, RetainOnError);
     if (!okay)
     {
+        DestroyExceptionInfo(exception);
         rb_raise(Class_ImageMagickError, "SetImageStorageClass failed. Can't store pixels.");
     }
 
     // Get a pointer to the pixels. Replace the values with the PixelPackets
     // from the pixels argument.
     {
-#if defined(HAVE_SYNCAUTHENTICPIXELS) || defined(HAVE_GETAUTHENTICPIXELS)
-        ExceptionInfo *exception;
-        exception = AcquireExceptionInfo();
-#endif
-
 #if defined(HAVE_GETAUTHENTICPIXELS)
         pixels = GetAuthenticPixels(image, x, y, cols, rows, exception);
         CHECK_EXCEPTION()
@@ -14938,8 +14935,8 @@ Image_wet_floor(int argc, VALUE *argv, VALUE self)
     CHECK_EXCEPTION();
 
 
-    (void) SetImageStorageClass(reflection, DirectClass);
-    rm_check_image_exception(reflection, DestroyOnError);
+    (void) SetImageStorageClass(reflection, DirectClass, exception);
+    rm_check_exception(exception, reflection, DestroyOnError);
 
 
     reflection->matte = MagickTrue;
