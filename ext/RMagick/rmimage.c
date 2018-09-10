@@ -9917,6 +9917,7 @@ Image_paint_transparent(int argc, VALUE *argv, VALUE self)
     Quantum opacity = TransparentAlpha;
     double keep, fuzz;
     MagickBooleanType okay, invert = MagickFalse;
+    ExceptionInfo *exception;
 
     image = rm_check_destroyed(self);
 
@@ -9945,11 +9946,15 @@ Image_paint_transparent(int argc, VALUE *argv, VALUE self)
     keep = new_image->fuzz;
     new_image->fuzz = fuzz;
 
-    okay = TransparentPaintImage(new_image, (const PixelInfo *)&color, opacity, invert);
+    exception = AcquireExceptionInfo();
+
+    okay = TransparentPaintImage(new_image, (const PixelInfo *)&color, opacity, invert, exception);
     new_image->fuzz = keep;
 
     // Is it possible for TransparentPaintImage to silently fail?
-    rm_check_image_exception(new_image, DestroyOnError);
+    rm_check_exception(exception, new_image, DestroyOnError);
+    (void) DestroyExceptionInfo(exception);
+
     if (!okay)
     {
         // Force exception
@@ -13906,6 +13911,7 @@ Image_transparent(int argc, VALUE *argv, VALUE self)
     PixelInfo color;
     Quantum opacity = TransparentAlpha;
     MagickBooleanType okay;
+    ExceptionInfo *exception;
 
     image = rm_check_destroyed(self);
 
@@ -13923,12 +13929,11 @@ Image_transparent(int argc, VALUE *argv, VALUE self)
 
     new_image = rm_clone_image(image);
 
-#if defined(HAVE_TRANSPARENTPAINTIMAGE)
-    okay = TransparentPaintImage(new_image, &color, opacity, MagickFalse);
-#else
-    okay = PaintTransparentImage(new_image, &color, opacity);
-#endif
-    rm_check_image_exception(new_image, DestroyOnError);
+    exception = AcquireExceptionInfo();
+    okay = TransparentPaintImage(new_image, &color, opacity, MagickFalse, exception);
+    rm_check_exception(exception, new_image, DestroyOnError);
+    (void) DestroyExceptionInfo(exception);
+
     if (!okay)
     {
         // Force exception
