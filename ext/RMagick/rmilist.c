@@ -342,11 +342,7 @@ ImageList_flatten_images(VALUE self)
     images = images_from_imagelist(self);
     exception = AcquireExceptionInfo();
 
-#if defined(HAVE_ENUM_FLATTENLAYER)
     new_image = MergeImageLayers(images, FlattenLayer, exception);
-#else
-    new_image = FlattenImages(images, exception);
-#endif
 
     rm_split(images);
     rm_check_exception(exception, new_image, DestroyOnError);
