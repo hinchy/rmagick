@@ -7948,7 +7948,7 @@ Image_level_colors(int argc, VALUE *argv, VALUE self)
             exception = AcquireExceptionInfo();
 
             GetPixelInfo(image, &white_color);
-            (void) QueryMagickColor("white", &white_color, exception);
+            (void) QueryColorCompliance("white", AllCompliance, &white_color, exception);
             CHECK_EXCEPTION()
 
             DestroyExceptionInfo(exception);
@@ -7957,11 +7957,11 @@ Image_level_colors(int argc, VALUE *argv, VALUE self)
             exception = AcquireExceptionInfo();
 
             GetPixelInfo(image, &white_color);
-            (void) QueryMagickColor("white", &white_color, exception);
+            (void) QueryColorCompliance("white", AllCompliance, &white_color, exception);
             CHECK_EXCEPTION()
 
             GetPixelInfo(image, &black_color);
-            (void) QueryMagickColor("black", &black_color, exception);
+            (void) QueryColorCompliance("black", AllCompliance, &black_color, exception);
             CHECK_EXCEPTION()
 
             DestroyExceptionInfo(exception);
