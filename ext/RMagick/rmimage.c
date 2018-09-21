@@ -7989,12 +7989,11 @@ Image_level_colors(int argc, VALUE *argv, VALUE self)
 
     new_image = rm_clone_image(image);
 
-#if defined(HAVE_LEVELCOLORSIMAGECHANNEL)      // new in 6.5.6-4
-    status = LevelColorsImageChannel(new_image, channels, &black_color, &white_color, invert);
-#else
-    status = LevelImageColors(new_image, channels, &black_color, &white_color, invert);
-#endif
-    rm_check_image_exception(new_image, DestroyOnError);
+    exception = AcquireExceptionInfo();
+    status = LevelImageColors(new_image, &black_color, &white_color, invert, exception);
+    rm_check_exception(exception, new_image, DestroyOnError);
+    DestroyExceptionInfo(exception);
+
     if (!status)
     {
         rb_raise(rb_eRuntimeError, "LevelImageColors failed for unknown reason.");
