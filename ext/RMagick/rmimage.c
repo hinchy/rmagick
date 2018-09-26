@@ -9610,6 +9610,7 @@ Image_opaque(VALUE self, VALUE target, VALUE fill)
     PixelInfo target_pp;
     PixelInfo fill_pp;
     MagickBooleanType okay;
+    ExceptionInfo *exception;
 
     image = rm_check_destroyed(self);
     new_image = rm_clone_image(image);
@@ -9618,12 +9619,10 @@ Image_opaque(VALUE self, VALUE target, VALUE fill)
     Color_to_PixelInfoWithImage(image, &target_pp, target);
     Color_to_PixelInfoWithImage(image, &fill_pp, fill);
 
-#if defined(HAVE_OPAQUEPAINTIMAGECHANNEL)
-    okay = OpaquePaintImageChannel(new_image, DefaultChannels, &target_pp, &fill_pp, MagickFalse);
-#else
-    okay =  PaintOpaqueImageChannel(new_image, DefaultChannels, &target_pp, &fill_pp);
-#endif
-    rm_check_image_exception(new_image, DestroyOnError);
+    exception = AcquireExceptionInfo();
+    okay = OpaquePaintImage(new_image, &target_pp, &fill_pp, MagickFalse, exception);
+    rm_check_exception(exception, new_image, DestroyOnError);
+    (void) DestroyExceptionInfo(exception);
 
     if (!okay)
     {
