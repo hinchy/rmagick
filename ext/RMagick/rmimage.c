@@ -387,10 +387,9 @@ Image_add_compose_mask(VALUE self, VALUE mask)
 
     // Delete any previously-existing mask image.
     // Store a clone of the new mask image.
+    (void) NegateImage(mask_image, MagickFalse, exception);
     (void) SetImageMask(image, CompositePixelMask, mask_image, exception);
     (void) DestroyExceptionInfo(exception);
-
-    (void) NegateImage(image->mask, MagickFalse);
 
     // Since both Set and GetImageMask clone the mask image I don't see any
     // way to negate the mask without referencing it directly. Sigh.
