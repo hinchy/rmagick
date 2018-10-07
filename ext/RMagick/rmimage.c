@@ -7822,10 +7822,10 @@ DEF_ATTR_ACCESSOR(Image, iterations, int)
  * Adjust the levels of an image given these points: black, mid, and white.
  *
  * Ruby usage:
- *   - @verbatim Image#level @endverbatim
- *   - @verbatim Image#level(black_point) @endverbatim
- *   - @verbatim Image#level(black_point, white_point) @endverbatim
- *   - @verbatim Image#level(black_point, white_point, gamma) @endverbatim
+ *   - @verbatim Image#level2 @endverbatim
+ *   - @verbatim Image#level2(black_point) @endverbatim
+ *   - @verbatim Image#level2(black_point, white_point) @endverbatim
+ *   - @verbatim Image#level2(black_point, white_point, gamma) @endverbatim
  *
  * Notes:
  *   - Default black_point is 0.0
