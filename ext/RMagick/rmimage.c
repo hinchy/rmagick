@@ -1196,6 +1196,7 @@ Image_bilevel_channel(int argc, VALUE *argv, VALUE self)
 {
     Image *image, *new_image;
     ChannelType channels;
+    ExceptionInfo *exception;
 
     image = rm_check_destroyed(self);
     channels = extract_channels(&argc, argv);
@@ -1211,8 +1212,11 @@ Image_bilevel_channel(int argc, VALUE *argv, VALUE self)
 
     new_image = rm_clone_image(image);
 
-    (void)BilevelImageChannel(new_image, channels, NUM2DBL(argv[0]));
-    rm_check_image_exception(new_image, DestroyOnError);
+    exception = AcquireExceptionInfo();
+    SetImageChannelMask(new_image, channels);
+    (void)BilevelImage(new_image, NUM2DBL(argv[0]), exception);
+    rm_check_exception(exception, new_image, DestroyOnError);
+    (void) DestroyExceptionInfo(exception);
 
     return rm_image_new(new_image);
 }
