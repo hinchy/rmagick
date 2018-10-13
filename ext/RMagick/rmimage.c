@@ -4323,7 +4323,7 @@ VALUE
 Image_convolve_channel(int argc, VALUE *argv, VALUE self)
 {
     Image *image, *new_image;
-    double *kernel;
+    KernelInfo *kernel_info;
     VALUE ary;
     unsigned int x, order;
     ChannelType channels;
@@ -4348,20 +4348,24 @@ Image_convolve_channel(int argc, VALUE *argv, VALUE self)
 
     rm_check_ary_len(ary, (long)(order*order));
 
-    kernel = ALLOC_N(double, (long)(order*order));
+    exception = AcquireExceptionInfo();
+    kernel_info = AcquireKernelInfo((const char *) NULL, exception);
+    kernel_info->width = order;
+    kernel_info->height = order;
+    kernel_info->x = (ssize_t) (order - 1) / 2;
+    kernel_info->y = (ssize_t) (order - 1) / 2;
+    kernel_info->values = (MagickRealType *) AcquireAlignedMemory(order, order * sizeof(*kernel_info->values));
 
-    // Convert the kernel array argument to an array of doubles
     for (x = 0; x < order*order; x++)
     {
-        kernel[x] = NUM2DBL(rb_ary_entry(ary, (long)x));
+        kernel_info->values[x] = NUM2DBL(rb_ary_entry(ary, (long)x));
     }
 
-    exception = AcquireExceptionInfo();
-
-    new_image = ConvolveImageChannel(image, channels, order, kernel, exception);
-    xfree((void *)kernel);
+    SetImageChannelMask(image, channels);
+    new_image = ConvolveImage(image, kernel_info, exception);
     rm_check_exception(exception, new_image, DestroyOnError);
 
+    (void) DestroyKernelInfo(kernel_info);
     (void) DestroyExceptionInfo(exception);
 
     rm_ensure_result(new_image);
