@@ -6822,7 +6822,6 @@ Image_from_blob(VALUE class, VALUE blob_arg)
 VALUE
 Image_function_channel(int argc, VALUE *argv, VALUE self)
 {
-#if defined(HAVE_FUNCTIONIMAGECHANNEL)
     Image *image, *new_image;
     MagickFunction function;
     unsigned long n, nparms;
@@ -6846,23 +6845,15 @@ Image_function_channel(int argc, VALUE *argv, VALUE self)
 
     switch (function)
     {
-#if defined(HAVE_ENUM_POLYNOMIALFUNCTION)
         case PolynomialFunction:
             if (argc == 0)
             {
                 rb_raise(rb_eArgError, "PolynomialFunction requires at least one argument.");
             }
             break;
-#endif
-#if defined(HAVE_ENUM_SINUSOIDFUNCTION)
         case SinusoidFunction:
-#endif
-#if defined(HAVE_ENUM_ARCSINFUNCTION)
         case ArcsinFunction:
-#endif
-#if defined(HAVE_ENUM_ARCTANFUNCTION)
         case ArctanFunction:
-#endif
            if (argc < 1 || argc > 4)
            {
                rb_raise(rb_eArgError, "wrong number of arguments (%d for 1 to 4)", argc);
@@ -6883,19 +6874,13 @@ Image_function_channel(int argc, VALUE *argv, VALUE self)
 
     exception = AcquireExceptionInfo();
     new_image = rm_clone_image(image);
-    (void) FunctionImageChannel(new_image, channels, function, nparms, parms, exception);
+    SetImageChannelMask(new_image, channels);
+    (void) FunctionImage(new_image, function, nparms, parms, exception);
     (void) xfree(parms);
     rm_check_exception(exception, new_image, DestroyOnError);
     DestroyExceptionInfo(exception);
 
     return rm_image_new(new_image);
-#else
-    rm_not_implemented();
-    return (VALUE)0;
-    argc = argc;
-    argv = argv;
-    self = self;
-#endif
 }
 
 
