@@ -62,12 +62,12 @@ module RMagick
         $pkg_config = false
 
         # Check for Magick-config
-        if find_executable('Magick-config') && !has_graphicsmagick_libmagick_dev_compat?
-          $magick_config = true
-          $magick_version = `Magick-config --version`[/^(\d+\.\d+\.\d+)/]
-        elsif find_executable('pkg-config')
+        if find_executable('pkg-config')
           $pkg_config = true
           $magick_version = `pkg-config MagickCore --modversion`[/^(\d+\.\d+\.\d+)/]
+        elsif find_executable('Magick-config') && !has_graphicsmagick_libmagick_dev_compat?
+          $magick_config = true
+          $magick_version = `Magick-config --version`[/^(\d+\.\d+\.\d+)/]
         else
           exit_failure "Can't install RMagick #{RMAGICK_VERS}. Can't find Magick-config or pkg-config in #{ENV['PATH']}\n"
         end
