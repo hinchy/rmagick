@@ -924,15 +924,7 @@ Image_auto_gamma_channel(int argc, VALUE *argv, VALUE self)
 VALUE
 Image_auto_level_channel(int argc, VALUE *argv, VALUE self)
 {
-#if defined(HAVE_AUTOLEVELIMAGECHANNEL)
-    return auto_channel(argc, argv, self, AutoLevelImageChannel);
-#else
-    rm_not_implemented();
-    return (VALUE)0;
-    argc = argc;
-    argv = argv;
-    self = self;
-#endif
+    return auto_channel(argc, argv, self, AutoLevelImage);
 }
 
 
