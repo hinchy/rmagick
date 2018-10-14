@@ -5840,7 +5840,6 @@ Image_equalize(VALUE self)
 VALUE
 Image_equalize_channel(int argc, VALUE *argv, VALUE self)
 {
-#if defined(HAVE_EQUALIZEIMAGECHANNEL)
     Image *image, *new_image;
     ExceptionInfo *exception;
     ChannelType channels;
@@ -5856,19 +5855,12 @@ Image_equalize_channel(int argc, VALUE *argv, VALUE self)
 
     exception = AcquireExceptionInfo();
 
-    (void) EqualizeImageChannel(new_image, channels);
-
-    rm_check_image_exception(new_image, DestroyOnError);
+    SetImageChannelMask(new_image, channels);
+    (void) EqualizeImage(new_image, exception);
+    rm_check_exception(exception, new_image, DestroyOnError);
     (void) DestroyExceptionInfo(exception);
 
     return rm_image_new(new_image);
-#else
-    argc = argc;
-    argv = argv;
-    self = self;
-    rm_not_implemented();
-    return(VALUE) 0;
-#endif
 }
 
 
