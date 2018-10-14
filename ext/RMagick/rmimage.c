@@ -860,10 +860,11 @@ crisscross(int bang, VALUE self, Image *fp(const Image *, ExceptionInfo *))
  * @return a new image
  */
 static VALUE
-auto_channel(int argc, VALUE *argv, VALUE self, MagickBooleanType (*fp)(Image *, const ChannelType))
+auto_channel(int argc, VALUE *argv, VALUE self, MagickBooleanType (*fp)(Image *, ExceptionInfo *))
 {
     Image *image, *new_image;
     ChannelType channels;
+    ExceptionInfo *exception;
 
     image = rm_check_destroyed(self);
     channels = extract_channels(&argc, argv);
@@ -874,8 +875,12 @@ auto_channel(int argc, VALUE *argv, VALUE self, MagickBooleanType (*fp)(Image *,
     }
 
     new_image = rm_clone_image(image);
-    (void) (fp)(new_image, channels);
-    rm_check_image_exception(new_image, DestroyOnError);
+
+    exception = AcquireExceptionInfo();
+    SetImageChannelMask(new_image, channels);
+    (void) (fp)(new_image, exception);
+    rm_check_exception(exception, new_image, DestroyOnError);
+    (void) DestroyExceptionInfo(exception);
 
     return rm_image_new(new_image);
 }
@@ -898,15 +903,7 @@ auto_channel(int argc, VALUE *argv, VALUE self, MagickBooleanType (*fp)(Image *,
 VALUE
 Image_auto_gamma_channel(int argc, VALUE *argv, VALUE self)
 {
-#if defined(HAVE_AUTOGAMMAIMAGECHANNEL)
-    return auto_channel(argc, argv, self, AutoGammaImageChannel);
-#else
-    rm_not_implemented();
-    return (VALUE) 0;
-    argc = argc;
-    argv = argv;
-    self = self;
-#endif
+    return auto_channel(argc, argv, self, AutoGammaImage);
 }
 
 
