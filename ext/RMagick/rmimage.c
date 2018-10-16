@@ -12566,12 +12566,16 @@ Image_signature(VALUE self)
 {
     Image *image;
     const char *signature;
+    ExceptionInfo *exception;
 
     image = rm_check_destroyed(self);
 
-    (void) SignatureImage(image);
+    exception = AcquireExceptionInfo();
+    (void) SignatureImage(image, exception);
     signature = rm_get_property(image, "signature");
-    rm_check_image_exception(image, RetainOnError);
+    rm_check_exception(exception, image, RetainOnError);
+    (void) DestroyExceptionInfo(exception);
+
     if (!signature)
     {
         return Qnil;
@@ -12673,6 +12677,7 @@ Image_spaceship(VALUE self, VALUE other)
     Image *imageA, *imageB;
     const char *sigA, *sigB;
     int res;
+    ExceptionInfo *exception;
 
     imageA = rm_check_destroyed(self);
 
@@ -12684,8 +12689,14 @@ Image_spaceship(VALUE self, VALUE other)
 
     imageB = rm_check_destroyed(other);
 
-    (void) SignatureImage(imageA);
-    (void) SignatureImage(imageB);
+    exception = AcquireExceptionInfo();
+    (void) SignatureImage(imageA, exception);
+    rm_check_exception(exception, imageA, RetainOnError);
+
+    (void) SignatureImage(imageB, exception);
+    rm_check_exception(exception, imageB, RetainOnError);
+    (void) DestroyExceptionInfo(exception);
+
     sigA = rm_get_property(imageA, "signature");
     sigB = rm_get_property(imageB, "signature");
     if (!sigA || !sigB)
