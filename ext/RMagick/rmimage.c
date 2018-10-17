@@ -579,6 +579,7 @@ Image_alpha(int argc, VALUE *argv, VALUE self)
 {
     Image *image;
     AlphaChannelOption alpha;
+    ExceptionInfo *exception;
 
 
     // For backward compatibility, make alpha() act like alpha?
@@ -595,39 +596,10 @@ Image_alpha(int argc, VALUE *argv, VALUE self)
     image = rm_check_frozen(self);
     VALUE_TO_ENUM(argv[0], alpha, AlphaChannelOption);
 
-#if defined(HAVE_SETIMAGEALPHACHANNEL)
-    // Added in 6.3.6-9
-    (void) SetImageAlphaChannel(image, alpha);
-    rm_check_image_exception(image, RetainOnError);
-#else
-    switch (alpha)
-    {
-        case ActivateAlphaChannel:
-            image->matte = MagickTrue;
-            break;
-
-        case DeactivateAlphaChannel:
-            image->matte = MagickFalse;
-            break;
-
-        case ResetAlphaChannel:
-            if (image->matte == MagickFalse)
-            {
-                (void) SetImageOpacity(image, OpaqueAlpha);
-                rm_check_image_exception(image, RetainOnError);
-            }
-            break;
-
-        case SetAlphaChannel:
-            (void) CompositeImage(image, CopyOpacityCompositeOp, image, 0, 0);
-            rm_check_image_exception(image, RetainOnError);
-            break;
-
-        default:
-            rb_raise(rb_eArgError, "unknown AlphaChannelType value");
-            break;
-    }
-#endif
+    exception = AcquireExceptionInfo();
+    (void) SetImageAlphaChannel(image, alpha, exception);
+    rm_check_exception(exception, image, RetainOnError);
+    (void) DestroyExceptionInfo(exception);
 
     return argv[0];
 }
