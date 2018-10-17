@@ -16,7 +16,7 @@ regwidth = shorts.columns / 2
 regheight = shorts.rows / 2
 
 mask = Image.new(regwidth, regheight) { self.background_color = 'white' }
-mask.opacity = 0.50 * TransparentOpacity
+mask.opacity = 0.50 * TransparentAlpha
 
 black = Image.new(shorts.columns, shorts.rows) { self.background_color = 'black' }
 pairs = ImageList.new

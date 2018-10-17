@@ -1221,7 +1221,7 @@ class Image2_UT < Test::Unit::TestCase
     assert_nothing_raised do
       assert_block { @img.opaque? }
     end
-    @img.opacity = Magick::TransparentOpacity
+    @img.opacity = Magick::TransparentAlpha
     assert_block { !@img.opaque? }
   end
 
@@ -1244,15 +1244,15 @@ class Image2_UT < Test::Unit::TestCase
     assert_not_nil(res)
     assert_instance_of(Magick::Image, res)
     assert_not_same(res, @img)
-    assert_nothing_raised { @img.paint_transparent('red', Magick::TransparentOpacity) }
-    assert_nothing_raised { @img.paint_transparent('red', Magick::TransparentOpacity, true) }
-    assert_nothing_raised { @img.paint_transparent('red', Magick::TransparentOpacity, true, 50) }
+    assert_nothing_raised { @img.paint_transparent('red', Magick::TransparentAlpha) }
+    assert_nothing_raised { @img.paint_transparent('red', Magick::TransparentAlpha, true) }
+    assert_nothing_raised { @img.paint_transparent('red', Magick::TransparentAlpha, true, 50) }
 
     # Too many arguments
-    assert_raise(ArgumentError) { @img.paint_transparent('red', Magick::TransparentOpacity, true, 50, 50) }
+    assert_raise(ArgumentError) { @img.paint_transparent('red', Magick::TransparentAlpha, true, 50, 50) }
     # Not enough
     assert_raise(ArgumentError) { @img.paint_transparent }
-    assert_raise(TypeError) { @img.paint_transparent('red', Magick::TransparentOpacity, true, []) }
+    assert_raise(TypeError) { @img.paint_transparent('red', Magick::TransparentAlpha, true, []) }
     assert_raise(TypeError) { @img.paint_transparent('red', 'blue') }
     assert_raise(TypeError) { @img.paint_transparent(50) }
   end

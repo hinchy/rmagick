@@ -19,12 +19,12 @@ cols = grayrocks.columns
 # Create an array of opacity values, proceeding from
 # transparent to opaque. The array should have as many
 # elements as there are columns in the image. The first
-# element should be TransparentOpacity and each succeeding
+# element should be TransparentAlpha and each succeeding
 # element slightly more opaque than its predecessor.
-step = Magick::TransparentOpacity / cols.to_f
+step = Magick::TransparentAlpha / cols.to_f
 opacity_steps = Array.new(cols)
 cols.times do |x|
-  opacity_steps[x] = Magick::TransparentOpacity - Integer(x * step)
+  opacity_steps[x] = Magick::TransparentAlpha - Integer(x * step)
   opacity_steps[x] = Magick::OpaqueAlpha if opacity_steps[x] < Magick::OpaqueAlpha
 end
 

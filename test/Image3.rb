@@ -804,8 +804,8 @@ class Image3_UT < Test::Unit::TestCase
     end
     pixel = Magick::Pixel.new
     assert_nothing_raised { @img.transparent(pixel) }
-    assert_nothing_raised { @img.transparent('white', Magick::TransparentOpacity) }
-    assert_raise(ArgumentError) { @img.transparent('white', Magick::TransparentOpacity, 2) }
+    assert_nothing_raised { @img.transparent('white', Magick::TransparentAlpha) }
+    assert_raise(ArgumentError) { @img.transparent('white', Magick::TransparentAlpha, 2) }
     assert_nothing_raised { @img.transparent('white', Magick::QuantumRange / 2) }
     assert_raise(TypeError) { @img.transparent(2) }
   end

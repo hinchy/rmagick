@@ -25,7 +25,7 @@ before.compression = Magick::LZWCompression
 before.write('transparent_before.gif')
 
 before.fuzz = 100
-after = before.transparent('black', Magick::TransparentOpacity)
+after = before.transparent('black', Magick::TransparentAlpha)
 
 # Different way of reading an image - start with an imagelist.
 # Use the plasma image as a background so we can see that
