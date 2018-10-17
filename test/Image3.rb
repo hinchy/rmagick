@@ -491,7 +491,6 @@ class Image3_UT < Test::Unit::TestCase
       Magick::YellowChannel,
       #     Magick::AlphaChannel,
       Magick::OpacityChannel,
-      Magick::MatteChannel,
       Magick::BlackChannel,
       Magick::IndexChannel,
       Magick::AllChannels
