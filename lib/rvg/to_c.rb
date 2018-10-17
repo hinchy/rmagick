@@ -59,7 +59,7 @@ END_HEADER
       "Memory allocation failed");
   }
 
-  SetImage(image, OpaqueOpacity);
+  SetImage(image, OpaqueAlpha);
 
   draw = CloneDrawInfo(info, NULL);
   CloneString(&(draw->primitive), primitives);
