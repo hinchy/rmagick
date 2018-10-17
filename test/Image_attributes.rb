@@ -339,7 +339,7 @@ class Image_Attributes_UT < Test::Unit::TestCase
 
   def test_filter
     assert_nothing_raised { @img.filter }
-    assert_instance_of(Magick::FilterTypes, @img.filter)
+    assert_instance_of(Magick::FilterType, @img.filter)
     assert_equal(Magick::UndefinedFilter, @img.filter)
     assert_nothing_raised { @img.filter = Magick::PointFilter }
     assert_equal(Magick::PointFilter, @img.filter)
