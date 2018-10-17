@@ -425,7 +425,7 @@ class Image2_UT < Test::Unit::TestCase
     end
     assert_nothing_raised { @img.distortion_channel(@img, Magick::MeanSquaredErrorMetric) }
     assert_nothing_raised { @img.distortion_channel(@img, Magick::PeakAbsoluteErrorMetric) }
-    assert_nothing_raised { @img.distortion_channel(@img, Magick::PeakSignalToNoiseRatioMetric) }
+    assert_nothing_raised { @img.distortion_channel(@img, Magick::PeakSignalToNoiseRatioErrorMetric) }
     assert_nothing_raised { @img.distortion_channel(@img, Magick::RootMeanSquaredErrorMetric) }
     assert_nothing_raised { @img.distortion_channel(@img, Magick::MeanSquaredErrorMetric, Magick::RedChannel, Magick:: BlueChannel) }
     assert_raise(TypeError) { @img.distortion_channel(@img, 2) }
