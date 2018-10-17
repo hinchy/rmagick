@@ -54,8 +54,8 @@ class ImportExportUT < Test::Unit::TestCase
 
       ipixels = pixels.collect { |px| px * 16_843_009 }
       p = ipixels.pack('I*')
-      import(p, Magick::IntegerPixel)
       import(p, Magick::LongPixel)
+      import(p, Magick::LongLongPixel)
 
     when 16
       cpixels = pixels.collect { |px| px / 257 }
@@ -70,8 +70,8 @@ class ImportExportUT < Test::Unit::TestCase
       ipixels = pixels.collect { |px| px * 65_537 }
       ipixels.pack('I*')
     # Diff s/b 0.0 but never is.
-    # import(p, Magick::IntegerPixel, 430.7834)
     # import(p, Magick::LongPixel, 430.7834)
+    # import(p, Magick::LongLongPixel, 430.7834)
 
     when 32
       cpixels = pixels.collect { |px| px / 16_843_009 }
@@ -83,8 +83,8 @@ class ImportExportUT < Test::Unit::TestCase
       import(p, Magick::ShortPixel)
 
       p = pixels.pack('I*')
-      import(p, Magick::IntegerPixel)
       import(p, Magick::LongPixel)
+      import(p, Magick::LongLongPixel)
       p = pixels.pack('D*') if is_hdri_support
       import(p, Magick::QuantumPixel)
 
@@ -99,8 +99,8 @@ class ImportExportUT < Test::Unit::TestCase
 
       ipixels = pixels.collect { |px| px / 4_294_967_297 }
       p = ipixels.pack('I*')
-      import(p, Magick::IntegerPixel)
       import(p, Magick::LongPixel)
+      import(p, Magick::LongLongPixel)
 
       p = pixels.pack('Q*')
       import(p, Magick::QuantumPixel)
