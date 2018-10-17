@@ -10081,10 +10081,6 @@ Image_pixel_color(int argc, VALUE *argv, VALUE self)
 #endif
             old_color = image->colormap[(unsigned long)*indexes];
         }
-        if (!image->matte)
-        {
-            old_color.opacity = OpaqueAlpha;
-        }
         return Pixel_from_PixelInfo(&old_color);
     }
 
@@ -10123,10 +10119,6 @@ Image_pixel_color(int argc, VALUE *argv, VALUE self)
     if (pixel)
     {
         old_color = *pixel;
-        if (!image->matte)
-        {
-            old_color.opacity = OpaqueAlpha;
-        }
     }
     *pixel = new_color;
 
@@ -12734,10 +12726,6 @@ count_channels(Image *image, ChannelType *channels)
     {
         *channels = (ChannelType) (*channels & ~IndexChannel);  /* remove index channels from count */
     }
-    if ( image->matte == MagickFalse )
-    {
-        *channels = (ChannelType) (*channels & ~OpacityChannel);  /* remove matte/alpha *channels from count */
-    }
 
     if (*channels & RedChannel)
     {
@@ -15010,8 +14998,6 @@ Image_wet_floor(int argc, VALUE *argv, VALUE self)
     (void) SetImageStorageClass(reflection, DirectClass, exception);
     rm_check_exception(exception, reflection, DestroyOnError);
 
-
-    reflection->matte = MagickTrue;
     opacity = initial;
 
     for (y = 0; y < max_rows; y++)
