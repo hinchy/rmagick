@@ -9899,7 +9899,7 @@ Image_page_eq(VALUE self, VALUE rect)
  *   - @verbatim Image#paint_transparent(target, opacity, invert, fuzz) @endverbatim
  *
  * Notes:
- *   - Default opacity is TransparentOpacity
+ *   - Default opacity is TransparentAlpha
  *   - Default invert is false
  *   - Default fuzz is the image's fuzz (see Image_fuzz_eq)
  *
@@ -9914,7 +9914,7 @@ Image_paint_transparent(int argc, VALUE *argv, VALUE self)
 #if defined(HAVE_TRANSPARENTPAINTIMAGE)
     Image *image, *new_image;
     PixelInfo color;
-    Quantum opacity = TransparentOpacity;
+    Quantum opacity = TransparentAlpha;
     double keep, fuzz;
     MagickBooleanType okay, invert = MagickFalse;
 
@@ -13889,8 +13889,8 @@ Image_total_ink_density(VALUE self)
  *   - @verbatim Image#transparent(pixel, opacity) @endverbatim
  *
  * Notes:
- *   - Default opacity is Magick::TransparentOpacity.
- *   - Can use Magick::OpaqueAlpha or Magick::TransparentOpacity, or any
+ *   - Default opacity is Magick::TransparentAlpha.
+ *   - Can use Magick::OpaqueAlpha or Magick::TransparentAlpha, or any
  *     value >= 0 && <= QuantumRange.
  *   - Use Image#fuzz= to define the tolerance level.
  *
@@ -13904,7 +13904,7 @@ Image_transparent(int argc, VALUE *argv, VALUE self)
 {
     Image *image, *new_image;
     PixelInfo color;
-    Quantum opacity = TransparentOpacity;
+    Quantum opacity = TransparentAlpha;
     MagickBooleanType okay;
 
     image = rm_check_destroyed(self);
@@ -13949,7 +13949,7 @@ Image_transparent(int argc, VALUE *argv, VALUE self)
  *   - @verbatim Image#transparent_chroma(low, high, opacity, invert) @endverbatim
  *
  * Notes:
- *   - Default opacity is TransparentOpacity
+ *   - Default opacity is TransparentAlpha
  *   - Default invert is false
  *   - Available in ImageMagick >= 6.4.5-6
  *
@@ -13963,7 +13963,7 @@ Image_transparent_chroma(int argc, VALUE *argv, VALUE self)
 {
 #if defined(HAVE_TRANSPARENTPAINTIMAGECHROMA)
     Image *image, *new_image;
-    Quantum opacity = TransparentOpacity;
+    Quantum opacity = TransparentAlpha;
     PixelInfo low, high;
     MagickBooleanType invert = MagickFalse;
     MagickBooleanType okay;
@@ -14912,7 +14912,7 @@ Image_wet_floor(int argc, VALUE *argv, VALUE self)
         rb_raise(rb_eArgError, "Transparency change rate must be >= 0.0 (%g)", rate);
     }
 
-    initial *= TransparentOpacity;
+    initial *= TransparentAlpha;
 
     // The number of rows in which to transition from the initial level of
     // transparency to complete transparency. rate == 0.0 -> no change.
@@ -14920,7 +14920,7 @@ Image_wet_floor(int argc, VALUE *argv, VALUE self)
     {
         max_rows = (long)((double)image->rows) / (3.0 * rate);
         max_rows = (long)min((unsigned long)max_rows, image->rows);
-        step =  (TransparentOpacity - initial) / max_rows;
+        step =  (TransparentAlpha - initial) / max_rows;
     }
     else
     {
@@ -14952,9 +14952,9 @@ Image_wet_floor(int argc, VALUE *argv, VALUE self)
 
     for (y = 0; y < max_rows; y++)
     {
-        if (opacity > TransparentOpacity)
+        if (opacity > TransparentAlpha)
         {
-            opacity = TransparentOpacity;
+            opacity = TransparentAlpha;
         }
 
 
