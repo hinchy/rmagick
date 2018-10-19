@@ -9672,12 +9672,12 @@ Image_opaque(VALUE self, VALUE target, VALUE fill)
 VALUE
 Image_opaque_channel(int argc, VALUE *argv, VALUE self)
 {
-#if defined(HAVE_OPAQUEPAINTIMAGECHANNEL)
     Image *image, *new_image;
     PixelInfo target_pp, fill_pp;
     ChannelType channels;
     double keep, fuzz;
     MagickBooleanType okay, invert = MagickFalse;
+    ExceptionInfo *exception;
 
     image = rm_check_destroyed(self);
     channels = extract_channels(&argc, argv);
@@ -9713,11 +9713,14 @@ Image_opaque_channel(int argc, VALUE *argv, VALUE self)
     keep = new_image->fuzz;
     new_image->fuzz = fuzz;
 
-    okay = OpaquePaintImageChannel(new_image, channels, &target_pp, &fill_pp, invert);
+    exception = AcquireExceptionInfo();
+    SetImageChannelMask(new_image, channels);
+    okay = OpaquePaintImage(new_image, &target_pp, &fill_pp, invert, exception);
 
     // Restore saved fuzz value
     new_image->fuzz = keep;
-    rm_check_image_exception(new_image, DestroyOnError);
+    rm_check_exception(exception, new_image, DestroyOnError);
+    (void) DestroyExceptionInfo(exception);
 
     if (!okay)
     {
@@ -9727,14 +9730,6 @@ Image_opaque_channel(int argc, VALUE *argv, VALUE self)
     }
 
     return rm_image_new(new_image);
-
-#else
-    argc = argc;    // defeat "unused parameter" messages
-    argv = argv;
-    self = self;
-    rm_not_implemented();
-    return(VALUE)0;
-#endif
 }
 
 
