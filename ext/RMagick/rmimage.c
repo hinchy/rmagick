@@ -11855,7 +11855,6 @@ DEF_ATTR_READER(Image, scene, ulong)
 VALUE
 Image_selective_blur_channel(int argc, VALUE *argv, VALUE self)
 {
-#if defined(HAVE_SELECTIVEBLURIMAGECHANNEL)
     Image *image, *new_image;
     double radius, sigma, threshold;
     ExceptionInfo *exception;
@@ -11879,20 +11878,13 @@ Image_selective_blur_channel(int argc, VALUE *argv, VALUE self)
     threshold = rm_percentage(argv[2],1.0) * QuantumRange;
 
     exception = AcquireExceptionInfo();
-    new_image = SelectiveBlurImageChannel(image, channels, radius, sigma, threshold, exception);
+    SetImageChannelMask(image, channels);
+    new_image = SelectiveBlurImage(image, radius, sigma, threshold, exception);
     rm_check_exception(exception, new_image, DestroyOnError);
     (void) DestroyExceptionInfo(exception);
     rm_ensure_result(new_image);
 
     return rm_image_new(new_image);
-
-#else
-    rm_not_implemented();
-    argc = argc;
-    argv = argv;
-    self = self;
-    return (VALUE)0;
-#endif
 }
 
 
