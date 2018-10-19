@@ -14574,13 +14574,13 @@ Image_unsharp_mask(int argc, VALUE *argv, VALUE self)
  * Call UnsharpMaskImageChannel.
  *
  * Ruby usage:
- *   - @verbatim Image#unsharp_mask @endverbatim
- *   - @verbatim Image#unsharp_mask(radius) @endverbatim
- *   - @verbatim Image#unsharp_mask(radius, sigma) @endverbatim
- *   - @verbatim Image#unsharp_mask(radius, sigma, amount) @endverbatim
- *   - @verbatim Image#unsharp_mask(radius, sigma, amount, threshold) @endverbatim
- *   - @verbatim Image#unsharp_mask(radius, sigma, amount, threshold, channel) @endverbatim
- *   - @verbatim Image#unsharp_mask(radius, sigma, amount, threshold, channel, ...) @endverbatim
+ *   - @verbatim Image#unsharp_mask_channel @endverbatim
+ *   - @verbatim Image#unsharp_mask_channel(radius) @endverbatim
+ *   - @verbatim Image#unsharp_mask_channel(radius, sigma) @endverbatim
+ *   - @verbatim Image#unsharp_mask_channel(radius, sigma, amount) @endverbatim
+ *   - @verbatim Image#unsharp_mask_channel(radius, sigma, amount, threshold) @endverbatim
+ *   - @verbatim Image#unsharp_mask_channel(radius, sigma, amount, threshold, channel) @endverbatim
+ *   - @verbatim Image#unsharp_mask_channel(radius, sigma, amount, threshold, channel, ...) @endverbatim
  *
  * Notes:
  *   - Default radius is 0.0
