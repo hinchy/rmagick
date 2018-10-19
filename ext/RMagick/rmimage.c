@@ -10563,8 +10563,9 @@ Image_quantum_operator(int argc, VALUE *argv, VALUE self)
     }
 
     exception = AcquireExceptionInfo();
-    (void) EvaluateImageChannel(image, channel, qop, rvalue, exception);
-    CHECK_EXCEPTION()
+    SetImageChannelMask(image, channel);
+    (void) EvaluateImage(image, qop, rvalue, exception);
+    rm_check_exception(exception, image, RetainOnError);
 
     (void) DestroyExceptionInfo(exception);
 
