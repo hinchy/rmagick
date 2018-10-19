@@ -10714,11 +10714,8 @@ Image_radial_blur_channel(int argc, VALUE *argv, VALUE self)
 
     exception = AcquireExceptionInfo();
 
-#if defined(HAVE_ROTATIONALBLURIMAGECHANNEL)
-    new_image = RotationalBlurImageChannel(image, channels, NUM2DBL(argv[0]), exception);
-#else
-    new_image = RadialBlurImageChannel(image, channels, NUM2DBL(argv[0]), exception);
-#endif
+    SetImageChannelMask(image, channels);
+    new_image = RotationalBlurImage(image, NUM2DBL(argv[0]), exception);
     rm_check_exception(exception, new_image, DestroyOnError);
     (void) DestroyExceptionInfo(exception);
     rm_ensure_result(new_image);
