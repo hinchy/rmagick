@@ -290,7 +290,6 @@ image = image.first
 
 # Give the user something to look at while we're working.
 name = File.basename(filename).sub(/\..*?$/, '')
-$defout.sync = true
 printf "Creating #{name}_Histogram.miff"
 
 timer = Thread.new do
