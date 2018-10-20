@@ -249,13 +249,11 @@ horizontal_fill(
 {
     double steps;
     unsigned long x, y;
-    PixelInfo *master;
+    double red, green, blue;
     MagickRealType red_step, green_step, blue_step;
-#if defined(HAVE_SYNCAUTHENTICPIXELS) || defined(HAVE_QUEUEAUTHENTICPIXELS)
     ExceptionInfo *exception;
 
     exception = AcquireExceptionInfo();
-#endif
 
     steps = FMAX(y1, ((long)image->rows)-y1);
 
@@ -270,45 +268,33 @@ horizontal_fill(
     green_step = ((MagickRealType)stop_color->green - (MagickRealType)start_color->green) / steps;
     blue_step  = ((MagickRealType)stop_color->blue  - (MagickRealType)start_color->blue)  / steps;
 
-    // All the columns are the same, so make a master column and copy it to
-    // each of the "real" columns.
-    master = ALLOC_N(PixelInfo, image->rows);
-
-    for (y = 0; y < image->rows; y++)
-    {
-        double distance   = fabs(y1 - y);
-        master[y].red     = ROUND_TO_QUANTUM(start_color->red   + (distance * red_step));
-        master[y].green   = ROUND_TO_QUANTUM(start_color->green + (distance * green_step));
-        master[y].blue    = ROUND_TO_QUANTUM(start_color->blue  + (distance * blue_step));
-        master[y].alpha   = OpaqueAlpha;
-    }
-
     for (x = 0; x < image->columns; x++)
     {
         Quantum *col_pixels;
 
-#if defined(HAVE_QUEUEAUTHENTICPIXELS)
         col_pixels = QueueAuthenticPixels(image, (long int)x, 0, 1, image->rows, exception);
-#else
-        col_pixels = SetImagePixels(image, (long int)x, 0, 1, image->rows);
-        rm_check_image_exception(image, RetainOnError);
-#endif
-        memcpy(col_pixels, master, image->rows * sizeof(PixelPacket));
+        rm_check_exception(exception, image, RetainOnError);
 
-#if defined(HAVE_SYNCAUTHENTICPIXELS)
+        for (y = 0; y < image->rows; y++)
+        {
+            double distance   = fabs(y1 - y);
+            red   = ROUND_TO_QUANTUM(start_color->red   + (distance * red_step));
+            green = ROUND_TO_QUANTUM(start_color->green + (distance * green_step));
+            blue  = ROUND_TO_QUANTUM(start_color->blue  + (distance * blue_step));
+
+            SetPixelRed(image, red, col_pixels);
+            SetPixelGreen(image, green, col_pixels);
+            SetPixelBlue(image, blue, col_pixels);
+            SetPixelAlpha(image, OpaqueAlpha, col_pixels);
+
+            col_pixels += GetPixelChannels(image);
+        }
+
         SyncAuthenticPixels(image, exception);
-        CHECK_EXCEPTION()
-#else
-        SyncImagePixels(image);
-        rm_check_image_exception(image, RetainOnError);
-#endif
+        rm_check_exception(exception, image, RetainOnError);
     }
 
-#if defined(HAVE_SYNCAUTHENTICPIXELS) || defined(HAVE_QUEUEAUTHENTICPIXELS)
     DestroyExceptionInfo(exception);
-#endif
-
-    xfree((PixelPacket *)master);
 }
 
 /**
