@@ -453,11 +453,10 @@ h_diagonal_fill(
     double m, b, steps = 0.0;
     MagickRealType red_step, green_step, blue_step;
     double d1, d2;
-#if defined(HAVE_SYNCAUTHENTICPIXELS) || defined(HAVE_QUEUEAUTHENTICPIXELS)
+    double red, green, blue;
     ExceptionInfo *exception;
 
     exception = AcquireExceptionInfo();
-#endif
 
     // Compute the equation of the line: y=mx+b
     m = ((double)(y2 - y1))/((double)(x2 - x1));
@@ -499,36 +498,29 @@ h_diagonal_fill(
 
     for (y = 0; y < image->rows; y++)
     {
-        PixelPacket *row_pixels;
+        Quantum *row_pixels;
 
-#if defined(HAVE_QUEUEAUTHENTICPIXELS)
         row_pixels = QueueAuthenticPixels(image, 0, (long int)y, image->columns, 1, exception);
-        CHECK_EXCEPTION()
-#else
-        row_pixels = SetImagePixels(image, 0, (long int)y, image->columns, 1);
-        rm_check_image_exception(image, RetainOnError);
-#endif
+        rm_check_exception(exception, image, RetainOnError);
+
         for (x = 0; x < image->columns; x++)
         {
             double distance = (double) abs((int)(x-((y-b)/m)));
-            row_pixels[x].red     = ROUND_TO_QUANTUM(start_color->red   + (distance * red_step));
-            row_pixels[x].green   = ROUND_TO_QUANTUM(start_color->green + (distance * green_step));
-            row_pixels[x].blue    = ROUND_TO_QUANTUM(start_color->blue  + (distance * blue_step));
-            row_pixels[x].opacity = OpaqueAlpha;
+            red   = ROUND_TO_QUANTUM(start_color->red   + (distance * red_step));
+            green = ROUND_TO_QUANTUM(start_color->green + (distance * green_step));
+            blue  = ROUND_TO_QUANTUM(start_color->blue  + (distance * blue_step));
+
+            SetPixelRed(image, red, row_pixels);
+            SetPixelGreen(image, green, row_pixels);
+            SetPixelBlue(image, blue, row_pixels);
+            SetPixelAlpha(image, OpaqueAlpha, row_pixels);
         }
 
-#if defined(HAVE_SYNCAUTHENTICPIXELS)
         SyncAuthenticPixels(image, exception);
-        CHECK_EXCEPTION()
-#else
-        SyncImagePixels(image);
-        rm_check_image_exception(image, RetainOnError);
-#endif
+        rm_check_exception(exception, image, RetainOnError);
     }
 
-#if defined(HAVE_SYNCAUTHENTICPIXELS) || defined(HAVE_QUEUEAUTHENTICPIXELS)
     DestroyExceptionInfo(exception);
-#endif
 }
 
 /**
