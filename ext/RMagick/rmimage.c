@@ -7211,7 +7211,7 @@ VALUE
 Image_get_pixels(VALUE self, VALUE x_arg, VALUE y_arg, VALUE cols_arg, VALUE rows_arg)
 {
     Image *image;
-    const PixelPacket *pixels;
+    const Quantum *pixels;
     ExceptionInfo *exception;
     long x, y;
     unsigned long columns, rows;
@@ -7233,13 +7233,8 @@ Image_get_pixels(VALUE self, VALUE x_arg, VALUE y_arg, VALUE cols_arg, VALUE row
     // Cast AcquireImagePixels to get rid of the const qualifier. We're not going
     // to change the pixels but I don't want to make "pixels" const.
     exception = AcquireExceptionInfo();
-#if defined(HAVE_GETVIRTUALPIXELS)
     pixels = GetVirtualPixels(image, x, y, columns, rows, exception);
-#else
-    pixels = AcquireImagePixels(image, x, y, columns, rows, exception);
-#endif
-    CHECK_EXCEPTION()
-
+    rm_check_exception(exception, image, RetainOnError);
     (void) DestroyExceptionInfo(exception);
 
     // If the function failed, return a 0-length array.
@@ -7255,7 +7250,8 @@ Image_get_pixels(VALUE self, VALUE x_arg, VALUE y_arg, VALUE cols_arg, VALUE row
     // Convert the PixelPackets to Magick::Pixel objects
     for (n = 0; n < size; n++)
     {
-        rb_ary_store(pixel_ary, n, Pixel_from_PixelInfo(&pixels[n]));
+        rb_ary_store(pixel_ary, n, Pixel_from_Quantum(image, pixels));
+        pixels += GetPixelChannels(image);
     }
 
     return pixel_ary;
