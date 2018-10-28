@@ -13175,7 +13175,8 @@ Image_store_pixels(VALUE self, VALUE x_arg, VALUE y_arg, VALUE cols_arg
                    , VALUE rows_arg, VALUE new_pixels)
 {
     Image *image;
-    Pixel *pixels, *pixel;
+    Quantum *pixels;
+    PixelInfo *pixel;
     VALUE new_pixel;
     long n, size;
     long x, y;
@@ -13211,13 +13212,8 @@ Image_store_pixels(VALUE self, VALUE x_arg, VALUE y_arg, VALUE cols_arg
     // Get a pointer to the pixels. Replace the values with the PixelPackets
     // from the pixels argument.
     {
-#if defined(HAVE_GETAUTHENTICPIXELS)
         pixels = GetAuthenticPixels(image, x, y, cols, rows, exception);
-        CHECK_EXCEPTION()
-#else
-        pixels = GetImagePixels(image, x, y, cols, rows);
-        rm_check_image_exception(image, RetainOnError);
-#endif
+        rm_check_exception(exception, image, RetainOnError);
 
         if (pixels)
         {
@@ -13225,20 +13221,19 @@ Image_store_pixels(VALUE self, VALUE x_arg, VALUE y_arg, VALUE cols_arg
             {
                 new_pixel = rb_ary_entry(new_pixels, n);
                 Data_Get_Struct(new_pixel, Pixel, pixel);
-                pixels[n] = *pixel;
+
+                SetPixelRed(image, pixel->red, pixels);
+                SetPixelGreen(image, pixel->green, pixels);
+                SetPixelBlue(image, pixel->blue, pixels);
+                SetPixelAlpha(image, pixel->alpha, pixels);
+
+                pixels += GetPixelChannels(image);
             }
-#if defined(HAVE_SYNCAUTHENTICPIXELS)
             SyncAuthenticPixels(image, exception);
-            CHECK_EXCEPTION()
-#else
-            SyncImagePixels(image);
-            rm_check_image_exception(image, RetainOnError);
-#endif
+            rm_check_exception(exception, image, RetainOnError);
         }
 
-#if defined(HAVE_SYNCAUTHENTICPIXELS) || defined(HAVE_GETAUTHENTICPIXELS)
         DestroyExceptionInfo(exception);
-#endif
     }
 
     RB_GC_GUARD(new_pixel);
