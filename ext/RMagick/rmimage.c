@@ -8040,12 +8040,12 @@ Image_level_colors(int argc, VALUE *argv, VALUE self)
 VALUE
 Image_levelize_channel(int argc, VALUE *argv, VALUE self)
 {
-#if defined(HAVE_LEVELIZEIMAGECHANNEL)
     Image *image, *new_image;
     ChannelType channels;
     double black_point, white_point;
     double gamma = 1.0;
     MagickBooleanType status;
+    ExceptionInfo *exception;
 
     image = rm_check_destroyed(self);
     channels = extract_channels(&argc, argv);
@@ -8072,21 +8072,17 @@ Image_levelize_channel(int argc, VALUE *argv, VALUE self)
     }
 
     new_image = rm_clone_image(image);
-    status = LevelizeImageChannel(new_image, channels, black_point, white_point, gamma);
+    exception = AcquireExceptionInfo();
+    SetImageChannelMask(new_image, channels);
+    status = LevelizeImage(new_image, black_point, white_point, gamma, exception);
+    (void) DestroyExceptionInfo(exception);
 
-    rm_check_image_exception(new_image, DestroyOnError);
+    rm_check_exception(exception, new_image, DestroyOnError);
     if (!status)
     {
         rb_raise(rb_eRuntimeError, "LevelizeImageChannel failed for unknown reason.");
     }
     return rm_image_new(new_image);
-#else
-    rm_not_implemented();
-    self = self;
-    argc = argc;
-    argv = argv;
-    return(VALUE)0;
-#endif
 }
 
 
