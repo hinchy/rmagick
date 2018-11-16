@@ -410,17 +410,74 @@ ColorspaceType_new(ColorspaceType cs)
         case UndefinedColorspace:
             name = "UndefinedColorspace";
             break;
-        case RGBColorspace:
-            name = "RGBColorspace";
+        case CMYColorspace:
+            name = "CMYColorspace";
+            break;
+        case CMYKColorspace:
+            name = "CMYKColorspace";
             break;
         case GRAYColorspace:
             name = "GRAYColorspace";
             break;
-        case TransparentColorspace:
-            name = "TransparentColorspace";
+        case HCLColorspace:
+            name = "HCLColorspace";
+            break;
+        case HCLpColorspace:
+            name = "HCLpColorspace";
+            break;
+        case HSBColorspace:
+            name = "HSBColorspace";
+            break;
+        case HSIColorspace:
+            name = "HSIColorspace";
+            break;
+        case HSLColorspace:
+            name = "HSLColorspace";
+            break;
+        case HSVColorspace:
+            name = "HSVColorspace";
+            break;
+        case HWBColorspace:
+            name = "HWBColorspace";
+            break;
+        case LabColorspace:
+            name = "LabColorspace";
+            break;
+        case LCHColorspace:
+            name = "LCHColorspace";
+            break;
+        case LCHabColorspace:
+            name = "LCHabColorspace";
+            break;
+        case LCHuvColorspace:
+            name = "LCHuvColorspace";
+            break;
+        case LogColorspace:
+            name = "LogColorspace";
+            break;
+        case LMSColorspace:
+            name = "LMSColorspace";
+            break;
+        case LuvColorspace:
+            name = "LuvColorspace";
             break;
         case OHTAColorspace:
             name = "OHTAColorspace";
+            break;
+        case Rec601YCbCrColorspace:
+            name = "Rec601YCbCrColorspace";
+            break;
+        case Rec709YCbCrColorspace:
+            name = "Rec709YCbCrColorspace";
+            break;
+        case RGBColorspace:
+            name = "RGBColorspace";
+            break;
+        case sRGBColorspace:
+            name = "SRGBColorspace";
+            break;
+        case TransparentColorspace:
+            name = "TransparentColorspace";
             break;
         case XYZColorspace:
             name = "XYZColorspace";
@@ -431,6 +488,9 @@ ColorspaceType_new(ColorspaceType cs)
         case YCCColorspace:
             name = "YCCColorspace";
             break;
+        case YDbDrColorspace:
+            name = "YDbDrColorspace";
+            break;
         case YIQColorspace:
             name = "YIQColorspace";
             break;
@@ -440,36 +500,10 @@ ColorspaceType_new(ColorspaceType cs)
         case YUVColorspace:
             name = "YUVColorspace";
             break;
-        case CMYKColorspace:
-            name = "CMYKColorspace";
+        case LinearGRAYColorspace:
+            name = "LinearGRAYColorspace";
             break;
-        case sRGBColorspace:
-            name = "sRGBColorspace";
-            break;
-        case HSLColorspace:
-            name = "HSLColorspace";
-            break;
-        case HWBColorspace:
-            name = "HWBColorspace";
-            break;
-        case HSBColorspace:
-            name = "HSBColorspace";
-            break;
-        case LabColorspace:
-            name = "LabColorspace";
-            break;
-        case Rec601YCbCrColorspace:
-            name = "Rec601YCbCrColorspace";
-            break;
-        case Rec709YCbCrColorspace:
-            name = "Rec709YCbCrColorspace";
-            break;
-        case LogColorspace:
-            name = "LogColorspace";
-            break;
-        case CMYColorspace:
-            name = "CMYColorspace";
-            break;
+
     }
 
     return rm_enum_new(Class_ColorspaceType, ID2SYM(rb_intern(name)), INT2FIX(cs));
