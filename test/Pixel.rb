@@ -99,6 +99,7 @@ class PixelUT < Test::Unit::TestCase
     assert_nothing_raised { @pixel.to_color(Magick::SVGCompliance) }
     assert_nothing_raised { @pixel.to_color(Magick::X11Compliance) }
     assert_nothing_raised { @pixel.to_color(Magick::XPMCompliance) }
+    assert_nothing_raised { @pixel.to_color(Magick::MVGCompliance) }
     assert_nothing_raised { @pixel.to_color(Magick::AllCompliance, true) }
     assert_nothing_raised { @pixel.to_color(Magick::AllCompliance, false) }
     assert_nothing_raised { @pixel.to_color(Magick::AllCompliance, false, 8) }

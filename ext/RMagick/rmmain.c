@@ -998,12 +998,13 @@ Init_RMagick2(void)
         rb_define_const(Module_Magick, "AllCompliance"
                   , rm_enum_new(Class_ComplianceType
                   , ID2SYM(rb_intern("AllCompliance"))
-                  , INT2FIX(SVGCompliance|X11Compliance|XPMCompliance)));
+                  , INT2FIX(SVGCompliance|X11Compliance|XPMCompliance|MVGCompliance)));
 
         ENUMERATOR(NoCompliance)
         ENUMERATOR(SVGCompliance)
         ENUMERATOR(X11Compliance)
         ENUMERATOR(XPMCompliance)
+        ENUMERATOR(MVGCompliance)
     END_ENUM
 
     // CompositeOperator constants

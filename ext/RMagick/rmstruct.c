@@ -399,8 +399,8 @@ Color_to_s(VALUE self)
 static const char *
 ComplianceType_name(ComplianceType *c)
 {
-    if ((*c & (SVGCompliance|X11Compliance|XPMCompliance))
-        == (SVGCompliance|X11Compliance|XPMCompliance))
+    if ((*c & (SVGCompliance|X11Compliance|XPMCompliance|MVGCompliance))
+        == (SVGCompliance|X11Compliance|XPMCompliance|MVGCompliance))
     {
         return "AllCompliance";
     }
@@ -418,6 +418,11 @@ ComplianceType_name(ComplianceType *c)
     {
         *c = XPMCompliance;
         return "XPMCompliance";
+    }
+    else if (*c & MVGCompliance)
+    {
+        *c = MVGCompliance;
+        return "MVGCompliance";
     }
     else if (*c == NoCompliance)
     {
