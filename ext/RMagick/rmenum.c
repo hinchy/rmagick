@@ -1021,30 +1021,22 @@ LAYERMETHODTYPE_NAME(LAYERMETHODTYPE method)
     switch(method)
     {
         ENUM_TO_NAME(UndefinedLayer)
+        ENUM_TO_NAME(CoalesceLayer)
         ENUM_TO_NAME(CompareAnyLayer)
         ENUM_TO_NAME(CompareClearLayer)
         ENUM_TO_NAME(CompareOverlayLayer)
-        ENUM_TO_NAME(OptimizeLayer)
-        ENUM_TO_NAME(OptimizePlusLayer)
-        ENUM_TO_NAME(CoalesceLayer)
         ENUM_TO_NAME(DisposeLayer)
-        ENUM_TO_NAME(OptimizeTransLayer)
+        ENUM_TO_NAME(OptimizeLayer)
         ENUM_TO_NAME(OptimizeImageLayer)
+        ENUM_TO_NAME(OptimizePlusLayer)
+        ENUM_TO_NAME(OptimizeTransLayer)
         ENUM_TO_NAME(RemoveDupsLayer)
         ENUM_TO_NAME(RemoveZeroLayer)
         ENUM_TO_NAME(CompositeLayer)
-#if defined(HAVE_ENUM_MERGELAYER)
         ENUM_TO_NAME(MergeLayer)
-#endif
-#if defined(HAVE_ENUM_MOSAICLAYER)
-        ENUM_TO_NAME(MosaicLayer)
-#endif
-#if defined(HAVE_ENUM_FLATTENLAYER)
         ENUM_TO_NAME(FlattenLayer)
-#endif
-#if defined(HAVE_ENUM_TRIMBOUNDSLAYER)
+        ENUM_TO_NAME(MosaicLayer)
         ENUM_TO_NAME(TrimBoundsLayer)
-#endif
     }
 
     return "UndefinedLayer";

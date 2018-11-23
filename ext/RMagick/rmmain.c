@@ -1268,32 +1268,22 @@ Init_RMagick2(void)
 
     DEF_ENUM(LayerMethod)
         ENUMERATOR(UndefinedLayer)
+        ENUMERATOR(CoalesceLayer)
         ENUMERATOR(CompareAnyLayer)
         ENUMERATOR(CompareClearLayer)
         ENUMERATOR(CompareOverlayLayer)
-        ENUMERATOR(OptimizeLayer)
-        ENUMERATOR(OptimizePlusLayer)
-        ENUMERATOR(CoalesceLayer)
         ENUMERATOR(DisposeLayer)
-        ENUMERATOR(OptimizeTransLayer)
-#if defined(HAVE_ENUM_OPTIMIZEIMAGELAYER)
+        ENUMERATOR(OptimizeLayer)
         ENUMERATOR(OptimizeImageLayer)
-#endif
+        ENUMERATOR(OptimizePlusLayer)
+        ENUMERATOR(OptimizeTransLayer)
         ENUMERATOR(RemoveDupsLayer)
         ENUMERATOR(RemoveZeroLayer)
         ENUMERATOR(CompositeLayer)
-#if defined(HAVE_ENUM_MERGELAYER)
         ENUMERATOR(MergeLayer)
-#endif
-#if defined(HAVE_ENUM_MOSAICLAYER)
-        ENUMERATOR(MosaicLayer)
-#endif
-#if defined(HAVE_ENUM_FLATTENLAYER)
         ENUMERATOR(FlattenLayer)
-#endif
-#if defined(HAVE_ENUM_TRIMBOUNDSLAYER)
+        ENUMERATOR(MosaicLayer)
         ENUMERATOR(TrimBoundsLayer)
-#endif
     END_ENUM
 
     DEF_ENUM(MetricType)

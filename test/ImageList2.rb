@@ -257,16 +257,22 @@ class ImageList2UT < Test::Unit::TestCase
 
   def test_optimize_layers
     layer_methods = [
+      Magick::CoalesceLayer,
       Magick::CompareAnyLayer,
       Magick::CompareClearLayer,
       Magick::CompareOverlayLayer,
-      Magick::OptimizeLayer,
-      Magick::OptimizePlusLayer,
-      Magick::CoalesceLayer,
       Magick::DisposeLayer,
+      Magick::OptimizeLayer,
+      Magick::OptimizeImageLayer,
+      Magick::OptimizePlusLayer,
       Magick::OptimizeTransLayer,
       Magick::RemoveDupsLayer,
-      Magick::RemoveZeroLayer
+      Magick::RemoveZeroLayer,
+      Magick::CompositeLayer,
+      Magick::MergeLayer,
+      Magick::FlattenLayer,
+      Magick::MosaicLayer,
+      Magick::TrimBoundsLayer
     ]
     @ilist.read(IMAGES_DIR + '/Button_0.gif', IMAGES_DIR + '/Button_1.gif')
     layer_methods.each do |method|
