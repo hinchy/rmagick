@@ -1151,16 +1151,12 @@ Init_RMagick2(void)
         ENUMERATOR(SentinelDistortion)
     END_ENUM
 
-#if defined(HAVE_TYPE_DITHERMETHOD)
     DEF_ENUM(DitherMethod)
         ENUMERATOR(UndefinedDitherMethod)
-#if defined(HAVE_ENUM_NODITHERMETHOD)
         ENUMERATOR(NoDitherMethod)
-#endif
         ENUMERATOR(RiemersmaDitherMethod)
         ENUMERATOR(FloydSteinbergDitherMethod)
     END_ENUM
-#endif
 
     DEF_ENUM(EndianType)
         ENUMERATOR(UndefinedEndian)
