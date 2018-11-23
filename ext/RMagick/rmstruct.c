@@ -974,6 +974,7 @@ StyleType_name(StyleType style)
         ENUM_TO_NAME(ItalicStyle)
         ENUM_TO_NAME(ObliqueStyle)
         ENUM_TO_NAME(AnyStyle)
+        ENUM_TO_NAME(BoldStyle)
     }
 
     return "UndefinedStyle";

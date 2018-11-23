@@ -1472,6 +1472,7 @@ Init_RMagick2(void)
         ENUMERATOR(ItalicStyle)
         ENUMERATOR(ObliqueStyle)
         ENUMERATOR(AnyStyle)
+        ENUMERATOR(BoldStyle)
     END_ENUM
 
     // VirtualPixelMethod
