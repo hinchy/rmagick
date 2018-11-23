@@ -1289,12 +1289,17 @@ Init_RMagick2(void)
     DEF_ENUM(MetricType)
         ENUMERATOR(UndefinedErrorMetric)
         ENUMERATOR(AbsoluteErrorMetric)
+        ENUMERATOR(FuzzErrorMetric)
         ENUMERATOR(MeanAbsoluteErrorMetric)
         ENUMERATOR(MeanErrorPerPixelErrorMetric)
         ENUMERATOR(MeanSquaredErrorMetric)
+        ENUMERATOR(NormalizedCrossCorrelationErrorMetric)
         ENUMERATOR(PeakAbsoluteErrorMetric)
         ENUMERATOR(PeakSignalToNoiseRatioErrorMetric)
+        ENUMERATOR(PerceptualHashErrorMetric)
         ENUMERATOR(RootMeanSquaredErrorMetric)
+        ENUMERATOR(StructuralSimilarityErrorMetric)
+        ENUMERATOR(StructuralDissimilarityErrorMetric)
     END_ENUM
 
     // NoiseType constants
