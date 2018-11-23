@@ -1220,10 +1220,15 @@ Init_RMagick2(void)
         ENUMERATOR(UndefinedType)
         ENUMERATOR(BilevelType)
         ENUMERATOR(GrayscaleType)
+        ENUMERATOR(GrayscaleAlphaType)
         ENUMERATOR(PaletteType)
+        ENUMERATOR(PaletteAlphaType)
         ENUMERATOR(TrueColorType)
+        ENUMERATOR(TrueColorAlphaType)
         ENUMERATOR(ColorSeparationType)
+        ENUMERATOR(ColorSeparationAlphaType)
         ENUMERATOR(OptimizeType)
+        ENUMERATOR(PaletteBilevelAlphaType)
     END_ENUM
 
     // InterlaceType constants
