@@ -1421,16 +1421,16 @@ Init_RMagick2(void)
         ENUMERATOR(PixelsPerCentimeterResolution)
     END_ENUM
 
-#if defined(HAVE_SPARSECOLORIMAGE)
     DEF_ENUM(SparseColorMethod)
         ENUMERATOR(UndefinedColorInterpolate)
         ENUMERATOR(BarycentricColorInterpolate)
         ENUMERATOR(BilinearColorInterpolate)
-        //ENUMERATOR(PolynomialColorInterpolate)
+        ENUMERATOR(PolynomialColorInterpolate)
         ENUMERATOR(ShepardsColorInterpolate)
         ENUMERATOR(VoronoiColorInterpolate)
+        ENUMERATOR(InverseColorInterpolate)
+        ENUMERATOR(ManhattanColorInterpolate)
     END_ENUM
-#endif
 
     // SpreadMethod
     DEF_ENUM(SpreadMethod)
