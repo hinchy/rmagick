@@ -1258,19 +1258,13 @@ Init_RMagick2(void)
         ENUMERATOR(SplineInterpolatePixel)
     END_ENUM
 
-#if defined(HAVE_TYPE_MAGICKFUNCTION)
     DEF_ENUM(MagickFunction)
         ENUMERATOR(UndefinedFunction)
+        ENUMERATOR(ArcsinFunction)
+        ENUMERATOR(ArctanFunction)
         ENUMERATOR(PolynomialFunction)
         ENUMERATOR(SinusoidFunction)
-#if defined(HAVE_ENUM_ARCSINFUNCTION)
-        ENUMERATOR(ArcsinFunction)
-#endif
-#if defined(HAVE_ENUM_ARCTANFUNCTION)
-        ENUMERATOR(ArctanFunction)
-#endif
     END_ENUM
-#endif
 
     DEF_ENUM(LayerMethod)
         ENUMERATOR(UndefinedLayer)
