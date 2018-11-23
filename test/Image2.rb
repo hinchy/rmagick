@@ -414,6 +414,24 @@ class Image2_UT < Test::Unit::TestCase
     assert_nothing_raised { @img.distort(Magick::ScaleRotateTranslateDistortion, [28, 24, 0.4, 0.8 - 110, 37.5, 60]) }
     assert_raise(ArgumentError) { @img.distort }
     assert_raise(ArgumentError) { @img.distort(Magick::AffineDistortion) }
+    assert_raise(ArgumentError) { @img.distort(Magick::AffineProjectionDistortion) }
+    assert_raise(ArgumentError) { @img.distort(Magick::ScaleRotateTranslateDistortion) }
+    assert_raise(ArgumentError) { @img.distort(Magick::PerspectiveDistortion) }
+    assert_raise(ArgumentError) { @img.distort(Magick::PerspectiveProjectionDistortion) }
+    assert_raise(ArgumentError) { @img.distort(Magick::BilinearForwardDistortion) }
+    assert_raise(ArgumentError) { @img.distort(Magick::BilinearDistortion) }
+    assert_raise(ArgumentError) { @img.distort(Magick::BilinearReverseDistortion) }
+    assert_raise(ArgumentError) { @img.distort(Magick::PolynomialDistortion) }
+    assert_raise(ArgumentError) { @img.distort(Magick::ArcDistortion) }
+    assert_raise(ArgumentError) { @img.distort(Magick::PolarDistortion) }
+    assert_raise(ArgumentError) { @img.distort(Magick::DePolarDistortion) }
+    assert_raise(ArgumentError) { @img.distort(Magick::Cylinder2PlaneDistortion) }
+    assert_raise(ArgumentError) { @img.distort(Magick::Plane2CylinderDistortion) }
+    assert_raise(ArgumentError) { @img.distort(Magick::BarrelDistortion) }
+    assert_raise(ArgumentError) { @img.distort(Magick::BarrelInverseDistortion) }
+    assert_raise(ArgumentError) { @img.distort(Magick::ShepardsDistortion) }
+    assert_raise(ArgumentError) { @img.distort(Magick::ResizeDistortion) }
+    assert_raise(ArgumentError) { @img.distort(Magick::SentinelDistortion) }
     assert_raise(TypeError) { @img.distort(1, [1]) }
   end
 

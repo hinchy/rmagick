@@ -1132,35 +1132,23 @@ Init_RMagick2(void)
         ENUMERATOR(UndefinedDistortion)
         ENUMERATOR(AffineDistortion)
         ENUMERATOR(AffineProjectionDistortion)
-        ENUMERATOR(ArcDistortion)
-#if defined(HAVE_ENUM_POLARDISTORTION)
-        ENUMERATOR(PolarDistortion)
-#endif
-#if defined(HAVE_ENUM_DEPOLARDISTORTION)
-        ENUMERATOR(DePolarDistortion)
-#endif
-#if defined(HAVE_ENUM_BARRELDISTORTION)
-        ENUMERATOR(BarrelDistortion)
-#endif
-        ENUMERATOR(BilinearDistortion)
-#if defined(HAVE_ENUM_BILINEARFORWARDDISTORTION)
-        ENUMERATOR(BilinearForwardDistortion)
-#endif
-#if defined(HAVE_ENUM_BILINEARREVERSEDISTORTION)
-        ENUMERATOR(BilinearReverseDistortion)
-#endif
+        ENUMERATOR(ScaleRotateTranslateDistortion)
         ENUMERATOR(PerspectiveDistortion)
         ENUMERATOR(PerspectiveProjectionDistortion)
-#if defined(HAVE_ENUM_POLYNOMIALDISTORTION)
+        ENUMERATOR(BilinearForwardDistortion)
+        ENUMERATOR(BilinearDistortion)
+        ENUMERATOR(BilinearReverseDistortion)
         ENUMERATOR(PolynomialDistortion)
-#endif
-        ENUMERATOR(ScaleRotateTranslateDistortion)
-#if defined(HAVE_ENUM_SHEPARDSDISTORTION)
-        ENUMERATOR(ShepardsDistortion)
-#endif
-#if defined(HAVE_ENUM_BARRELINVERSEDISTORTION)
+        ENUMERATOR(ArcDistortion)
+        ENUMERATOR(PolarDistortion)
+        ENUMERATOR(DePolarDistortion)
+        ENUMERATOR(Cylinder2PlaneDistortion)
+        ENUMERATOR(Plane2CylinderDistortion)
+        ENUMERATOR(BarrelDistortion)
         ENUMERATOR(BarrelInverseDistortion)
-#endif
+        ENUMERATOR(ShepardsDistortion)
+        ENUMERATOR(ResizeDistortion)
+        ENUMERATOR(SentinelDistortion)
     END_ENUM
 
 #if defined(HAVE_TYPE_DITHERMETHOD)
