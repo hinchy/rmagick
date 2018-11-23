@@ -248,60 +248,39 @@ typedef struct
  */
 typedef enum _QuantumExpressionOperator
 {
-    UndefinedQuantumOperator, /**< undefined */
-    AddQuantumOperator,       /**< add */
-    AndQuantumOperator,       /**< and */
-    DivideQuantumOperator,    /**< divide */
-    LShiftQuantumOperator,    /**< lshift */
-    MaxQuantumOperator,       /**< max */
-    MinQuantumOperator,       /**< min */
-    MultiplyQuantumOperator,  /**< multiply */
-    OrQuantumOperator,        /**< or */
-    RShiftQuantumOperator,    /**< rshift */
-    SubtractQuantumOperator,  /**< subtract */
-    XorQuantumOperator,       /**< xor */
-#if defined(HAVE_ENUM_POWEVALUATEOPERATOR)
-    PowQuantumOperator,       /**< pow */
-#endif
-#if defined(HAVE_ENUM_LOGEVALUATEOPERATOR)
-    LogQuantumOperator,       /**< log */
-#endif
-#if defined(HAVE_ENUM_THRESHOLDEVALUATEOPERATOR)
-    ThresholdQuantumOperator, /**< threshold */
-#endif
-#if defined(HAVE_ENUM_THRESHOLDBLACKEVALUATEOPERATOR)
-    ThresholdBlackQuantumOperator, /**< threshold black */
-#endif
-#if defined(HAVE_ENUM_THRESHOLDWHITEEVALUATEOPERATOR)
-    ThresholdWhiteQuantumOperator, /**< threshold white */
-#endif
-#if defined(HAVE_ENUM_GAUSSIANNOISEEVALUATEOPERATOR)
-    GaussianNoiseQuantumOperator, /**< gaussian noise */
-#endif
-#if defined(HAVE_ENUM_IMPULSENOISEEVALUATEOPERATOR)
-    ImpulseNoiseQuantumOperator, /**< impulse noise */
-#endif
-#if defined(HAVE_ENUM_LAPLACIANNOISEEVALUATEOPERATOR)
-    LaplacianNoiseQuantumOperator, /**< laplacian noise */
-#endif
-#if defined(HAVE_ENUM_MULTIPLICATIVENOISEEVALUATEOPERATOR)
-    MultiplicativeNoiseQuantumOperator, /**< multiplicative noise */
-#endif
-#if defined(HAVE_ENUM_POISSONNOISEEVALUATEOPERATOR)
-    PoissonNoiseQuantumOperator, /**< poisson noise */
-#endif
-#if defined(HAVE_ENUM_UNIFORMNOISEEVALUATEOPERATOR)
-    UniformNoiseQuantumOperator, /**< uniform noise */
-#endif
-#if defined(HAVE_ENUM_COSINEEVALUATEOPERATOR)
-    CosineQuantumOperator,    /**< cosine */
-#endif
-#if defined(HAVE_ENUM_SINEEVALUATEOPERATOR)
-    SineQuantumOperator,      /**< sine */
-#endif
-#if defined(HAVE_ENUM_ADDMODULUSEVALUATEOPERATOR)
-    AddModulusQuantumOperator /**< add modulus */
-#endif
+    UndefinedQuantumOperator,
+    AbsQuantumOperator,
+    AddQuantumOperator,
+    AddModulusQuantumOperator,
+    AndQuantumOperator,
+    CosineQuantumOperator,
+    DivideQuantumOperator,
+    ExponentialQuantumOperator,
+    GaussianNoiseQuantumOperator,
+    ImpulseNoiseQuantumOperator,
+    LaplacianNoiseQuantumOperator,
+    LeftShiftQuantumOperator,
+    LogQuantumOperator,
+    MaxQuantumOperator,
+    MeanQuantumOperator,
+    MedianQuantumOperator,
+    MinQuantumOperator,
+    MultiplicativeNoiseQuantumOperator,
+    MultiplyQuantumOperator,
+    OrQuantumOperator,
+    PoissonNoiseQuantumOperator,
+    PowQuantumOperator,
+    RightShiftQuantumOperator,
+    RootMeanSquareQuantumOperator,
+    SetQuantumOperator,
+    SineQuantumOperator,
+    SubtractQuantumOperator,
+    SumQuantumOperator,
+    ThresholdBlackQuantumOperator,
+    ThresholdQuantumOperator,
+    ThresholdWhiteQuantumOperator,
+    UniformNoiseQuantumOperator,
+    XorQuantumOperator,
 } QuantumExpressionOperator ;
 
 

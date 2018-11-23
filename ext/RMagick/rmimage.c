@@ -10410,23 +10410,56 @@ Image_quantum_operator(int argc, VALUE *argv, VALUE self)
         case UndefinedQuantumOperator:
             qop = UndefinedEvaluateOperator;
             break;
+        case AbsQuantumOperator:
+            qop = AbsEvaluateOperator;
+            break;
         case AddQuantumOperator:
             qop = AddEvaluateOperator;
+            break;
+        case AddModulusQuantumOperator:
+            qop = AddModulusEvaluateOperator;
             break;
         case AndQuantumOperator:
             qop = AndEvaluateOperator;
             break;
+        case CosineQuantumOperator:
+            qop = CosineEvaluateOperator;
+            break;
         case DivideQuantumOperator:
             qop = DivideEvaluateOperator;
             break;
-        case LShiftQuantumOperator:
+        case ExponentialQuantumOperator:
+            qop = ExponentialEvaluateOperator;
+            break;
+        case GaussianNoiseQuantumOperator:
+            qop = GaussianNoiseEvaluateOperator;
+            break;
+        case ImpulseNoiseQuantumOperator:
+            qop = ImpulseNoiseEvaluateOperator;
+            break;
+        case LaplacianNoiseQuantumOperator:
+            qop = LaplacianNoiseEvaluateOperator;
+            break;
+        case LeftShiftQuantumOperator:
             qop = LeftShiftEvaluateOperator;
+            break;
+        case LogQuantumOperator:
+            qop = LogEvaluateOperator;
             break;
         case MaxQuantumOperator:
             qop = MaxEvaluateOperator;
             break;
+        case MeanQuantumOperator:
+            qop = MeanEvaluateOperator;
+            break;
+        case MedianQuantumOperator:
+            qop = MedianEvaluateOperator;
+            break;
         case MinQuantumOperator:
             qop = MinEvaluateOperator;
+            break;
+        case MultiplicativeNoiseQuantumOperator:
+            qop = MultiplicativeNoiseEvaluateOperator;
             break;
         case MultiplyQuantumOperator:
             qop = MultiplyEvaluateOperator;
@@ -10434,85 +10467,45 @@ Image_quantum_operator(int argc, VALUE *argv, VALUE self)
         case OrQuantumOperator:
             qop = OrEvaluateOperator;
             break;
-        case RShiftQuantumOperator:
+        case PoissonNoiseQuantumOperator:
+            qop = PoissonNoiseEvaluateOperator;
+            break;
+        case PowQuantumOperator:
+            qop = PowEvaluateOperator;
+            break;
+        case RightShiftQuantumOperator:
             qop = RightShiftEvaluateOperator;
+            break;
+        case RootMeanSquareQuantumOperator:
+            qop = RootMeanSquareEvaluateOperator;
+            break;
+        case SetQuantumOperator:
+            qop = SetEvaluateOperator;
+            break;
+        case SineQuantumOperator:
+            qop = SineEvaluateOperator;
             break;
         case SubtractQuantumOperator:
             qop = SubtractEvaluateOperator;
             break;
-        case XorQuantumOperator:
-            qop = XorEvaluateOperator;
+        case SumQuantumOperator:
+            qop = SumEvaluateOperator;
             break;
-#if defined(HAVE_ENUM_POWEVALUATEOPERATOR)
-        case PowQuantumOperator:
-            qop = PowEvaluateOperator;
-            break;
-#endif
-#if defined(HAVE_ENUM_LOGEVALUATEOPERATOR)
-        case LogQuantumOperator:
-            qop = LogEvaluateOperator;
-            break;
-#endif
-#if defined(HAVE_ENUM_THRESHOLDEVALUATEOPERATOR)
-        case ThresholdQuantumOperator:
-            qop = ThresholdEvaluateOperator;
-            break;
-#endif
-#if defined(HAVE_ENUM_THRESHOLDBLACKEVALUATEOPERATOR)
         case ThresholdBlackQuantumOperator:
             qop = ThresholdBlackEvaluateOperator;
             break;
-#endif
-#if defined(HAVE_ENUM_THRESHOLDWHITEEVALUATEOPERATOR)
+        case ThresholdQuantumOperator:
+            qop = ThresholdEvaluateOperator;
+            break;
         case ThresholdWhiteQuantumOperator:
             qop = ThresholdWhiteEvaluateOperator;
             break;
-#endif
-#if defined(HAVE_ENUM_GAUSSIANNOISEEVALUATEOPERATOR)
-        case GaussianNoiseQuantumOperator:
-            qop = GaussianNoiseEvaluateOperator;
-            break;
-#endif
-#if defined(HAVE_ENUM_IMPULSENOISEEVALUATEOPERATOR)
-        case ImpulseNoiseQuantumOperator:
-            qop = ImpulseNoiseEvaluateOperator;
-            break;
-#endif
-#if defined(HAVE_ENUM_LAPLACIANNOISEEVALUATEOPERATOR)
-        case LaplacianNoiseQuantumOperator:
-            qop = LaplacianNoiseEvaluateOperator;
-            break;
-#endif
-#if defined(HAVE_ENUM_MULTIPLICATIVENOISEEVALUATEOPERATOR)
-        case MultiplicativeNoiseQuantumOperator:
-            qop = MultiplicativeNoiseEvaluateOperator;
-            break;
-#endif
-#if defined(HAVE_ENUM_POISSONNOISEEVALUATEOPERATOR)
-        case PoissonNoiseQuantumOperator:
-            qop = PoissonNoiseEvaluateOperator;
-            break;
-#endif
-#if defined(HAVE_ENUM_UNIFORMNOISEEVALUATEOPERATOR)
         case UniformNoiseQuantumOperator:
             qop = UniformNoiseEvaluateOperator;
             break;
-#endif
-#if defined(HAVE_ENUM_COSINEEVALUATEOPERATOR)
-        case CosineQuantumOperator:
-            qop = CosineEvaluateOperator;
+        case XorQuantumOperator:
+            qop = XorEvaluateOperator;
             break;
-#endif
-#if defined(HAVE_ENUM_SINEEVALUATEOPERATOR)
-        case SineQuantumOperator:
-            qop = SineEvaluateOperator;
-            break;
-#endif
-#if defined(HAVE_ENUM_ADDMODULUSEVALUATEOPERATOR)
-        case AddModulusQuantumOperator:
-            qop = AddModulusEvaluateOperator;
-            break;
-#endif
     }
 
     exception = AcquireExceptionInfo();
