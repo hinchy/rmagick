@@ -694,26 +694,18 @@ ImageList_optimize_layers(VALUE self, VALUE method)
         case CompareOverlayLayer:
             new_images = CompareImagesLayers(images, mthd, exception);
             break;
-#if defined(HAVE_ENUM_MOSAICLAYER)
         case MosaicLayer:
             new_images = MergeImageLayers(images, mthd, exception);
             break;
-#endif
-#if defined(HAVE_ENUM_FLATTENLAYER)
         case FlattenLayer:
             new_images = MergeImageLayers(images, mthd, exception);
             break;
-#endif
-#if defined(HAVE_ENUM_MERGELAYER)
         case MergeLayer:
             new_images = MergeImageLayers(images, mthd, exception);
             break;
-#endif
-#if defined(HAVE_ENUM_TRIMBOUNDSLAYER)
         case TrimBoundsLayer:
             new_images = MergeImageLayers(images, mthd, exception);
             break;
-#endif
         default:
             rm_split(images);
             rb_raise(rb_eArgError, "undefined layer method");
