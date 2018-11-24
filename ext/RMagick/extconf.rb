@@ -81,17 +81,15 @@ module RMagick
           Logging.message("Detected ImageMagick version: #{$magick_version}\n")
 
           exit_failure "Can't install RMagick #{RMAGICK_VERS}. You must have ImageMagick #{Magick::MIN_IM_VERSION} or later.\n" if Gem::Version.new($magick_version) < Gem::Version.new(Magick::MIN_IM_VERSION)
+          true
         end
 
         # From ImageMagick 6.9 binaries are split to two and we have to use
         # MagickWand instead of MagickCore
         checking_for("presence of MagickWand API (ImageMagick version >= #{Magick::MIN_WAND_VERSION})") do
           $with_magick_wand = Gem::Version.new($magick_version) >= Gem::Version.new(Magick::MIN_WAND_VERSION)
-          if $with_magick_wand
-            Logging.message('Detected 6.9+ version, using MagickWand API')
-          else
-            Logging.message('Older version detected, using MagickCore API')
-          end
+          exit_failure "Older version detected." unless $with_magick_wand
+          true
         end
 
         # either set flags using Magick-config, MagickWand-config or pkg-config (new Debian default)
