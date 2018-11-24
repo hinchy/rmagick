@@ -197,6 +197,7 @@ KernelInfo_clone(VALUE self)
  *                      Magick::LoGKernel
  *                      Magick::BlurKernel
  *                      Magick::CometKernel
+ *                      Magick::BinomialKernel
  *                      Magick::LaplacianKernel
  *                      Magick::SobelKernel
  *                      Magick::FreiChenKernel
