@@ -334,28 +334,6 @@ END_MSWIN
     end
 
     def create_header_file
-      checking_for('QueryMagickColorname() new signature') do
-        if try_compile(<<"SRC")
-#{COMMON_HEADERS}
-        #{cpp_include(headers)}
-/*top*/
-int main() {
-  MagickBooleanType okay;
-  Image *image;
-  PixelInfo *color;
-  char *name;
-  ExceptionInfo *exception;
-  okay = QueryMagickColorname(image, color, SVGCompliance, name, exception);
-  return 0;
-  }
-SRC
-          $defs.push('-DHAVE_NEW_QUERYMAGICKCOLORNAME')
-          true
-        else
-          false
-        end
-      end
-
       headers = ['ruby.h', 'ruby/io.h']
 
       # Miscellaneous constants
