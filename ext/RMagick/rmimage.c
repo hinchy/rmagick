@@ -622,11 +622,7 @@ VALUE
 Image_alpha_q(VALUE self)
 {
     Image *image = rm_check_destroyed(self);
-#if defined(HAVE_GETIMAGEALPHACHANNEL)
     return GetImageAlphaChannel(image) ? Qtrue : Qfalse;
-#else
-    return image->matte ? Qtrue : Qfalse;
-#endif
 }
 
 
@@ -1592,9 +1588,7 @@ special_composite(Image *image, Image *overlay, double image_pct, double overlay
 
     blend_geometry(geometry, sizeof(geometry), image_pct, overlay_pct);
     (void) CloneString(&overlay->geometry, geometry);
-#if defined(HAVE_SETIMAGEARTIFACT)
     (void) SetImageArtifact(overlay,"compose:args", geometry);
-#endif
 
     exception = AcquireExceptionInfo();
     new_image = rm_clone_image(image);
@@ -1696,7 +1690,6 @@ Image_blend(int argc, VALUE *argv, VALUE self)
 VALUE
 Image_blue_shift(int argc, VALUE *argv, VALUE self)
 {
-#if defined(HAVE_BLUESHIFTIMAGE)
     Image *image, *new_image;
     double factor = 1.5;
     ExceptionInfo *exception;
@@ -1721,13 +1714,6 @@ Image_blue_shift(int argc, VALUE *argv, VALUE self)
     DestroyExceptionInfo(exception);
 
     return rm_image_new(new_image);
-#else
-    rm_not_implemented();
-    return (VALUE)0;
-    argc = argc;
-    argv = argv;
-    self = self;
-#endif
 }
 
 
@@ -3729,11 +3715,7 @@ composite_tiled(int bang, int argc, VALUE *argv, VALUE self)
         image = rm_clone_image(image);
     }
 
-#if defined(HAVE_SETIMAGEARTIFACT)
     (void) SetImageArtifact(comp_image,"modify-outside-overlay", "false");
-#else
-    (void) SetImageAttribute(comp_image, "[modify-outside-overlay]", "false");
-#endif
 
     status = MagickTrue;
     columns = comp_image->columns;
@@ -4592,7 +4574,6 @@ Image_density_eq(VALUE self, VALUE density_arg)
 VALUE
 Image_decipher(VALUE self, VALUE passphrase)
 {
-#if defined(HAVE_ENCIPHERIMAGE)
     Image *image, *new_image;
     char *pf;
     ExceptionInfo *exception;
@@ -4615,12 +4596,6 @@ Image_decipher(VALUE self, VALUE passphrase)
     DestroyExceptionInfo(exception);
 
     return rm_image_new(new_image);
-#else
-    self = self;
-    passphrase = passphrase;
-    rm_not_implemented();
-    return(VALUE)0;
-#endif
 }
 
 
@@ -4644,7 +4619,6 @@ Image_decipher(VALUE self, VALUE passphrase)
 VALUE
 Image_define(VALUE self, VALUE artifact, VALUE value)
 {
-#if defined(HAVE_SETIMAGEARTIFACT)
     Image *image;
     char *key, *val;
     MagickBooleanType status;
@@ -4669,13 +4643,6 @@ Image_define(VALUE self, VALUE artifact, VALUE value)
     }
 
     return value;
-#else
-    rm_not_implemented();
-    artifact = artifact;
-    value = value;
-    self = self;
-    return(VALUE)0;
-#endif
 }
 
 
@@ -4788,7 +4755,6 @@ Image_depth(VALUE self)
 VALUE
 Image_deskew(int argc, VALUE *argv, VALUE self)
 {
-#if defined(HAVE_DESKEWIMAGE)
     Image *image, *new_image;
     double threshold = 40.0 * QuantumRange / 100.0;
     unsigned long width;
@@ -4821,13 +4787,6 @@ Image_deskew(int argc, VALUE *argv, VALUE self)
     (void) DestroyExceptionInfo(exception);
 
     return rm_image_new(new_image);
-#else
-    self = self;        // defeat "unused parameter" message
-    argv = argv;
-    argc = argc;
-    rm_not_implemented();
-    return(VALUE)0;
-#endif
 }
 
 
@@ -5684,7 +5643,6 @@ Image_emboss(int argc, VALUE *argv, VALUE self)
 VALUE
 Image_encipher(VALUE self, VALUE passphrase)
 {
-#if defined(HAVE_ENCIPHERIMAGE)
     Image *image, *new_image;
     char *pf;
     ExceptionInfo *exception;
@@ -5707,12 +5665,6 @@ Image_encipher(VALUE self, VALUE passphrase)
     DestroyExceptionInfo(exception);
 
     return rm_image_new(new_image);
-#else
-    self = self;
-    passphrase = passphrase;
-    rm_not_implemented();
-    return(VALUE)0;
-#endif
 }
 
 
@@ -7630,8 +7582,6 @@ build_inspect_string(Image *image, char *buffer, size_t len)
         }
     }
 
-
-#if defined(HAVE_SETIMAGEARTIFACT)
     if (len-1-x > 6)
     {
         size_t value_l;
@@ -7646,7 +7596,6 @@ build_inspect_string(Image *image, char *buffer, size_t len)
             x += value_l;
         }
     }
-#endif
 
     assert(x < (int)(len-1));
     buffer[x] = '\0';
@@ -7932,7 +7881,6 @@ Image_level_channel(int argc, VALUE *argv, VALUE self)
 VALUE
 Image_level_colors(int argc, VALUE *argv, VALUE self)
 {
-#if defined(HAVE_LEVELIMAGECOLORS) || defined(HAVE_LEVELCOLORSIMAGECHANNEL)
     Image *image, *new_image;
     PixelInfo black_color, white_color;
     ChannelType channels;
@@ -7996,14 +7944,6 @@ Image_level_colors(int argc, VALUE *argv, VALUE self)
     }
 
     return rm_image_new(new_image);
-
-#else
-    rm_not_implemented();
-    self = self;
-    argc = argc;
-    argv = argv;
-    return(VALUE)0;
-#endif
 }
 
 
@@ -8134,7 +8074,6 @@ Image_linear_stretch(int argc, VALUE *argv, VALUE self)
 VALUE
 Image_liquid_rescale(int argc, VALUE *argv, VALUE self)
 {
-#if defined(HAVE_LIQUIDRESCALEIMAGE)
     Image *image, *new_image;
     unsigned long cols, rows;
     double delta_x = 0.0;
@@ -8165,13 +8104,6 @@ Image_liquid_rescale(int argc, VALUE *argv, VALUE self)
     rm_ensure_result(new_image);
 
     return rm_image_new(new_image);
-#else
-    argc = argc;    // defeat "unused parameter" messages
-    argv = argv;
-    self = self;
-    rm_not_implemented();
-    return(VALUE)0;
-#endif
 }
 
 
@@ -8681,7 +8613,6 @@ Image_matte(VALUE self)
 VALUE
 Image_matte_eq(VALUE self, VALUE matte)
 {
-#if defined(HAVE_SETIMAGEALPHACHANNEL)
     VALUE alpha_channel_type;
 
     if (RTEST(matte))
@@ -8694,11 +8625,6 @@ Image_matte_eq(VALUE self, VALUE matte)
     }
 
     return Image_alpha_eq(self, alpha_channel_type);
-#else
-    Image *image = rm_check_frozen(self);
-    image->matte = RTEST(matte) ? MagickTrue : MagickFalse;
-    return matte;
-#endif
 }
 
 
@@ -8858,11 +8784,7 @@ Image_median_filter(int argc, VALUE *argv, VALUE self)
     }
 
     exception = AcquireExceptionInfo();
-#if defined(HAVE_STATISTICIMAGE)
     new_image = StatisticImage(image, MedianStatistic, (size_t)radius, (size_t)radius, exception);
-#else
-    new_image = MedianFilterImage(image, radius, exception);
-#endif
     rm_check_exception(exception, new_image, DestroyOnError);
 
     (void) DestroyExceptionInfo(exception);
@@ -9890,7 +9812,6 @@ Image_page_eq(VALUE self, VALUE rect)
 VALUE
 Image_paint_transparent(int argc, VALUE *argv, VALUE self)
 {
-#if defined(HAVE_TRANSPARENTPAINTIMAGE)
     Image *image, *new_image;
     PixelInfo color;
     Quantum opacity = TransparentAlpha;
@@ -9942,13 +9863,6 @@ Image_paint_transparent(int argc, VALUE *argv, VALUE self)
     }
 
     return rm_image_new(new_image);
-#else
-    argc = argc;    // defeat "unused parameter" messages
-    argv = argv;
-    self = self;
-    rm_not_implemented();
-    return(VALUE)0;
-#endif
 }
 
 
@@ -10595,11 +10509,7 @@ Image_radial_blur(VALUE self, VALUE angle)
     image = rm_check_destroyed(self);
     exception = AcquireExceptionInfo();
 
-#if defined(HAVE_ROTATIONALBLURIMAGE)
     new_image = RotationalBlurImage(image, NUM2DBL(angle), exception);
-#else
-    new_image = RadialBlurImage(image, NUM2DBL(angle), exception);
-#endif
     rm_check_exception(exception, new_image, DestroyOnError);
 
     (void) DestroyExceptionInfo(exception);
@@ -10903,9 +10813,7 @@ Image_recolor(VALUE self, VALUE color_matrix)
     double *matrix;
     ExceptionInfo *exception;
 
-#if defined(HAVE_COLORMATRIXIMAGE)
     KernelInfo *kernel_info;
-#endif
 
     image = rm_check_destroyed(self);
     exception = AcquireExceptionInfo();
@@ -10922,10 +10830,10 @@ Image_recolor(VALUE self, VALUE color_matrix)
     order = (unsigned long)sqrt((double)(len + 1.0));
 
     // RecolorImage sets the ExceptionInfo and returns a NULL image if an error occurs.
-#if defined(HAVE_COLORMATRIXIMAGE)
     kernel_info = AcquireKernelInfo("1", exception);
     if (kernel_info == (KernelInfo *) NULL) {
         (void) DestroyExceptionInfo(exception);
+        xfree((void *)matrix);
         return Qnil;
     }
     kernel_info->width = order;
@@ -10934,9 +10842,6 @@ Image_recolor(VALUE self, VALUE color_matrix)
     new_image = ColorMatrixImage(image, kernel_info, exception);
     kernel_info->values = (double *) NULL;
     kernel_info = DestroyKernelInfo(kernel_info);
-#else
-    new_image = RecolorImage(image, order, matrix, exception);
-#endif
     xfree((void *)matrix);
 
     rm_check_exception(exception, new_image, DestroyOnError);
@@ -11070,11 +10975,7 @@ Image_reduce_noise(VALUE self, VALUE radius)
     image = rm_check_destroyed(self);
 
     exception = AcquireExceptionInfo();
-#if defined(HAVE_STATISTICIMAGE)
     new_image = StatisticImage(image, NonpeakStatistic, (size_t)radius, (size_t)radius, exception);
-#else
-    new_image = ReduceNoiseImage(image, NUM2DBL(radius), exception);
-#endif
     rm_check_exception(exception, new_image, DestroyOnError);
 
     (void) DestroyExceptionInfo(exception);
@@ -12652,7 +12553,6 @@ Image_spaceship(VALUE self, VALUE other)
 }
 
 
-#if defined(HAVE_SPARSECOLORIMAGE)
 /**
  * Count the number of channels from the specified list are in an image. Note
  * that this method also removes invalid channels based on the image.
@@ -12696,7 +12596,6 @@ count_channels(Image *image, ChannelType *channels)
 
     return ncolors;
 }
-#endif
 
 
 /**
@@ -12725,7 +12624,6 @@ count_channels(Image *image, ChannelType *channels)
 VALUE
 Image_sparse_color(int argc, VALUE *argv, VALUE self)
 {
-#if defined(HAVE_SPARSECOLORIMAGE)
     Image *image, *new_image;
     unsigned long x, nargs, ncolors;
     SparseColorMethod method;
@@ -12804,14 +12702,6 @@ Image_sparse_color(int argc, VALUE *argv, VALUE self)
     RB_GC_GUARD(args);
 
     return rm_image_new(new_image);
-
-#else
-    self = self;
-    argc = argc;
-    argv = argv;
-    rm_not_implemented();
-    return(VALUE)0;
-#endif
 }
 
 
@@ -13655,11 +13545,7 @@ Image_tint(int argc, VALUE *argv, VALUE self)
         rb_raise(rb_eArgError, "opacity percentages must be non-negative.");
     }
 
-#if defined(HAVE_SNPRINTF)
     snprintf(opacity, sizeof(opacity),
-#else
-    sprintf(opacity,
-#endif
             "%g,%g,%g,%g", red_pct_opaque*100.0, green_pct_opaque*100.0
             , blue_pct_opaque*100.0, alpha_pct_opaque*100.0);
 
@@ -13944,7 +13830,6 @@ Image_transparent(int argc, VALUE *argv, VALUE self)
 VALUE
 Image_transparent_chroma(int argc, VALUE *argv, VALUE self)
 {
-#if defined(HAVE_TRANSPARENTPAINTIMAGECHROMA)
     Image *image, *new_image;
     Quantum opacity = TransparentAlpha;
     PixelInfo low, high;
@@ -13984,13 +13869,6 @@ Image_transparent_chroma(int argc, VALUE *argv, VALUE self)
     }
 
     return rm_image_new(new_image);
-#else
-    rm_not_implemented();
-    return (VALUE)0;
-    argc = argc;
-    argv = argv;
-    self = self;
-#endif
 }
 
 
@@ -14317,7 +14195,6 @@ VALUE Image_image_type_eq(VALUE self, VALUE image_type)
 VALUE
 Image_undefine(VALUE self, VALUE artifact)
 {
-#if defined(HAVE_REMOVEIMAGEARTIFACT)
     Image *image;
     char *key;
     long key_l;
@@ -14326,12 +14203,6 @@ Image_undefine(VALUE self, VALUE artifact)
     key = rm_str2cstr(artifact, &key_l);
     (void) RemoveImageArtifact(image, key);
     return self;
-#else
-    rm_not_implemented();
-    artifact = artifact;
-    self = self;
-    return(VALUE)0;
-#endif
 }
 
 
@@ -14770,9 +14641,7 @@ Image_watermark(int argc, VALUE *argv, VALUE self)
 
     blend_geometry(geometry, sizeof(geometry), src_percent, dst_percent);
     (void) CloneString(&overlay->geometry, geometry);
-#if defined(HAVE_SETIMAGEARTIFACT)
     (void) SetImageArtifact(overlay,"compose:args", geometry);
-#endif
 
     exception = AcquireExceptionInfo();
 
@@ -15542,7 +15411,7 @@ static void call_trace_proc(Image *image, const char *which)
             n = sprintf(buffer, "%p", (void *)image);
             buffer[n] = '\0';
             trace_args[2] = rb_str_new2(buffer+2);      // don't use leading 0x
-            trace_args[3] = ID2SYM(THIS_FUNC());
+            trace_args[3] = ID2SYM(rb_frame_this_func());
             (void) rb_funcall2(trace, rm_ID_call, 4, (VALUE *)trace_args);
         }
     }

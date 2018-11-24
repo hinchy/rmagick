@@ -776,7 +776,7 @@ rm_not_implemented(void)
 {
 
     rb_raise(rb_eNotImpError, "the `%s' method is not supported by ImageMagick "
-            MagickLibVersionText, rb_id2name(THIS_FUNC()));
+            MagickLibVersionText, rb_id2name(rb_frame_this_func()));
 }
 
 
@@ -909,7 +909,6 @@ rm_set_property(Image *image, const char *property, const char *value)
  */
 void rm_set_user_artifact(Image *images, Info *info)
 {
-#if defined(HAVE_SETIMAGEARTIFACT)
     Image *image;
     const char *value;
 
@@ -923,10 +922,6 @@ void rm_set_user_artifact(Image *images, Info *info)
             image = GetNextImageInList(image);
         }
     }
-#else
-    images = images;
-    info = info;
-#endif
 }
 
 
@@ -965,7 +960,6 @@ rm_get_optional_arguments(VALUE img)
 }
 
 
-#if defined(HAVE_SETIMAGEARTIFACT)
 /**
  * Copy image options from the Info structure to the Image structure.
  *
@@ -991,7 +985,6 @@ static void copy_options(Image *image, Info *info)
         }
     }
 }
-#endif
 
 
 /**
@@ -1158,9 +1151,7 @@ void rm_sync_image_options(Image *image, Info *info)
         image->units = info->units;
     }
 
-#if defined(HAVE_SETIMAGEARTIFACT)
     copy_options(image, info);
-#endif
 }
 
 
@@ -1478,7 +1469,7 @@ rm_progress_monitor(
     span = rb_uint2big((unsigned long)sp);
 #endif
 
-    method = rb_str_new2(rb_id2name(THIS_FUNC()));
+    method = rb_str_new2(rb_id2name(rb_frame_this_func()));
 
     rval = rb_funcall((VALUE)client_data, rm_ID_call, 3, method, offset, span);
 
@@ -1627,11 +1618,7 @@ rm_error_handler(const ExceptionType severity, const char *reason, const char *d
     ExceptionType dummy;
 
     memset(msg, 0, sizeof(msg));
-#if defined(HAVE_SNPRINTF)
     len = snprintf(msg, sizeof(msg), "%s: `%s'", reason, description);
-#else
-    len = sprintf(msg, "%.250s: `%.240s'", reason, description);
-#endif
     msg[len] = '\0';
 
     rm_magick_error(msg, NULL);
@@ -1684,11 +1671,7 @@ handle_exception(ExceptionInfo *exception, Image *imglist, ErrorRetention retent
     // Handle simple warning
     if (exception->severity < ErrorException)
     {
-#if defined(HAVE_SNPRINTF)
         snprintf(msg, sizeof(msg)-1, "RMagick: %s%s%s",
-#else
-        sprintf(msg, "RMagick: %.500s%s%.500s",
-#endif
             GetLocaleExceptionMessage(exception->severity, exception->reason),
             exception->description ? ": " : "",
             exception->description ? GetLocaleExceptionMessage(exception->severity, exception->description) : "");
@@ -1735,17 +1718,10 @@ handle_exception(ExceptionInfo *exception, Image *imglist, ErrorRetention retent
     }
 
 
-#if defined(HAVE_SNPRINTF)
     snprintf(msg, sizeof(msg)-1, "%s%s%s",
         GetLocaleExceptionMessage(exception->severity, reason),
         desc[0] ? ": " : "",
         desc[0] ? GetLocaleExceptionMessage(exception->severity, desc) : "");
-#else
-    sprintf(msg, "%.*s%s%.*s",
-        sizeof(reason)-1, GetLocaleExceptionMessage(exception->severity, reason),
-        desc[0] ? ": " : "",
-        sizeof(desc)-1, desc[0] ? GetLocaleExceptionMessage(exception->severity, desc) : "");
-#endif
 
     msg[sizeof(msg)-1] = '\0';
 

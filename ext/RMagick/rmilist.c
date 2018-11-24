@@ -140,11 +140,7 @@ ImageList_average(VALUE self)
     images = images_from_imagelist(self);
 
     exception = AcquireExceptionInfo();
-#if defined(HAVE_EVALUATEIMAGES)
     new_image = EvaluateImages(images, MeanEvaluateOperator, exception);
-#else
-    new_image = AverageImages(images, exception);
-#endif
 
     rm_split(images);
     rm_check_exception(exception, new_image, DestroyOnError);
@@ -431,10 +427,8 @@ ImageList_map(int argc, VALUE *argv, VALUE self)
     VALUE scene, new_imagelist, t;
     ExceptionInfo *exception;
 
-#if defined(HAVE_REMAPIMAGES)
     QuantizeInfo quantize_info;
     rb_warning("ImageList#map is deprecated. Use ImageList#remap instead.");
-#endif
 
     switch (argc)
     {
@@ -461,12 +455,8 @@ ImageList_map(int argc, VALUE *argv, VALUE self)
     rm_ensure_result(new_images);
 
     // Call ImageMagick
-#if defined(HAVE_REMAPIMAGES)
     GetQuantizeInfo(&quantize_info);
     (void) RemapImages(&quantize_info, new_images, map, exception);
-#else
-    (void) MapImages(new_images, map, dither);
-#endif
     rm_check_exception(exception, new_images, DestroyOnError);
     (void) DestroyExceptionInfo(exception);
 
@@ -679,12 +669,8 @@ ImageList_optimize_layers(VALUE self, VALUE method)
             OptimizeImageTransparency(new_images, exception);
             rm_check_exception(exception, new_images, DestroyOnError);
             // mogrify supports -dither here. We don't.
-#if defined(HAVE_REMAPIMAGE)
             GetQuantizeInfo(&quantize_info);
             (void) RemapImages(&quantize_info, new_images, NULL, exception);
-#else
-            (void) MapImages(new_images, NULL, 0);
-#endif
             break;
         case OptimizePlusLayer:
             new_images = OptimizePlusImageLayers(images, exception);

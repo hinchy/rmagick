@@ -99,13 +99,6 @@
 #define ROUND_TO_QUANTUM(value) ((Quantum) ((value) > (Quantum)QuantumRange ? QuantumRange : (value) + 0.5))
 
 
-// Ruby 1.9.0 changed the name to rb_frame_this_func
-#if defined(HAVE_RB_FRAME_THIS_FUNC)
-#define THIS_FUNC() rb_frame_this_func() /**< get the Ruby function being called */
-#else
-#define THIS_FUNC() rb_frame_last_func() /**< get the Ruby function being called */
-#endif
-
 // GetReadFile doesn't exist in Ruby 1.9.0
 #if !defined(GetReadFile)
 #define GetReadFile(fptr) rb_io_stdio_file(fptr) /**< Ruby read file pointer */
@@ -138,20 +131,6 @@
  */
 #if defined(HAVE_CONSTITUTECOMPONENTTERMINUS)
 #define DestroyConstitute(void) ConstituteComponentTerminus(void)
-#endif
-
-/** ImageMagick 6.5.9 replaced MagickLibSubversion with
- * MagickLibAddendum.
- */
-#if defined(HAVE_MAGICKLIBADDENDUM)
-#define MagickLibSubversion MagickLibAddendum
-#endif
-
-/** IM 6.4.1 replaced AllocateImage with AcquireImage.
- * Both have the same signature.
- */
-#if !defined(HAVE_ACQUIREIMAGE)
-#define AcquireImage(info) AllocateImage(info)
 #endif
 
 // ImageLayerMethod replaced MagickLayerMethod starting with 6.3.6
@@ -357,9 +336,7 @@ EXTERN VALUE Class_PaintMethod;
 EXTERN VALUE Class_PreviewType;
 EXTERN VALUE Class_RenderingIntent;
 EXTERN VALUE Class_ResolutionType;
-#if defined(HAVE_SPARSECOLORIMAGE)
 EXTERN VALUE Class_SparseColorMethod;
-#endif
 EXTERN VALUE Class_SpreadMethod;
 EXTERN VALUE Class_StorageType;
 EXTERN VALUE Class_StretchType;

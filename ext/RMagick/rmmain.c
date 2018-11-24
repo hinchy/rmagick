@@ -31,7 +31,6 @@ static void features_constant(void);
  *  Handle transferring ImageMagick memory allocations/frees to Ruby.
  *  These functions have the same signature as the equivalent C functions.
  */
-#if defined(HAVE_SETMAGICKMEMORYMETHODS)
 /**
  * Allocate memory.
  *
@@ -118,9 +117,6 @@ static void set_managed_memory(void)
         rb_define_const(Module_Magick, "MANAGED_MEMORY", Qfalse);
     }
 }
-#endif
-
-
 
 
 /**
@@ -139,11 +135,7 @@ Init_RMagick2(void)
 
     Module_Magick = rb_define_module("Magick");
 
-#if defined(HAVE_SETMAGICKMEMORYMETHODS)
     set_managed_memory();
-#else
-    rb_define_const(Module_Magick, "MANAGED_MEMORY", Qfalse);
-#endif
 
     /*-----------------------------------------------------------------------*/
     /* Create IDs for frequently used methods, etc.                          */
@@ -1772,18 +1764,8 @@ features_constant(void)
 {
     VALUE features;
 
-#if defined(HAVE_GETMAGICKFEATURES)
     // 6.5.7 - latest (7.0.0)
     features = rb_str_new2(GetMagickFeatures());
-#elif defined(MagickFeatures)
-    // 6.5.7 - latest (7.0.0)
-    features = rb_str_new2(MagickFeatures);
-#elif defined(MagickSupport)
-    // 6.5.5 - 6.5.6
-    features = rb_str_new2(MagickSupport);
-#else
-    features = rb_str_new("unknown", 7);
-#endif
 
     rb_obj_freeze(features);
     rb_define_const(Module_Magick, "Magick_features", features);
