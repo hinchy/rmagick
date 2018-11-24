@@ -126,13 +126,6 @@
         f = NULL;
 
 
-/** ImageMagick 6.5.7 replaced DestroyConstitute with
- * ConstituteComponentTerminus. Both have the same signature.
- */
-#if defined(HAVE_CONSTITUTECOMPONENTTERMINUS)
-#define DestroyConstitute(void) ConstituteComponentTerminus(void)
-#endif
-
 // ImageLayerMethod replaced MagickLayerMethod starting with 6.3.6
 #define LAYERMETHODTYPE LayerMethod /**< layer method */
 #define CLASS_LAYERMETHODTYPE Class_LayerMethod /**< layer method class */

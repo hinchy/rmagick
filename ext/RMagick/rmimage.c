@@ -3975,9 +3975,6 @@ Image_constitute(VALUE class, VALUE width_arg, VALUE height_arg
     rm_check_exception(exception, image, DestroyOnError);
 
     (void) DestroyExceptionInfo(exception);
-#if defined(HAVE_DESTROYCONSTITUTE) || defined(HAVE_CONSTITUTECOMPONENTTERMINUS)
-    DestroyConstitute();
-#endif
 
     RB_GC_GUARD(pixel);
     RB_GC_GUARD(pixel0);
