@@ -1222,33 +1222,22 @@ VirtualPixelMethod_name(VirtualPixelMethod method)
     switch (method)
     {
         ENUM_TO_NAME(UndefinedVirtualPixelMethod)
-        ENUM_TO_NAME(EdgeVirtualPixelMethod)
-        ENUM_TO_NAME(MirrorVirtualPixelMethod)
-        ENUM_TO_NAME(TileVirtualPixelMethod)
-        ENUM_TO_NAME(TransparentVirtualPixelMethod)
         ENUM_TO_NAME(BackgroundVirtualPixelMethod)
         ENUM_TO_NAME(DitherVirtualPixelMethod)
+        ENUM_TO_NAME(EdgeVirtualPixelMethod)
+        ENUM_TO_NAME(MirrorVirtualPixelMethod)
         ENUM_TO_NAME(RandomVirtualPixelMethod)
-        ENUM_TO_NAME(ConstantVirtualPixelMethod)
+        ENUM_TO_NAME(TileVirtualPixelMethod)
+        ENUM_TO_NAME(TransparentVirtualPixelMethod)
         ENUM_TO_NAME(MaskVirtualPixelMethod)
         ENUM_TO_NAME(BlackVirtualPixelMethod)
         ENUM_TO_NAME(GrayVirtualPixelMethod)
         ENUM_TO_NAME(WhiteVirtualPixelMethod)
-#if defined(HAVE_ENUM_HORIZONTALTILEVIRTUALPIXELMETHOD)
         ENUM_TO_NAME(HorizontalTileVirtualPixelMethod)
-#endif
-#if defined(HAVE_ENUM_VERTICALTILEVIRTUALPIXELMETHOD)
         ENUM_TO_NAME(VerticalTileVirtualPixelMethod)
-#endif
-#if defined(HAVE_ENUM_HORIZONTALTILEEDGEVIRTUALPIXELMETHOD)
         ENUM_TO_NAME(HorizontalTileEdgeVirtualPixelMethod)
-#endif
-#if defined(HAVE_ENUM_VERTICALTILEEDGEVIRTUALPIXELMETHOD)
         ENUM_TO_NAME(VerticalTileEdgeVirtualPixelMethod)
-#endif
-#if defined(HAVE_ENUM_CHECKERTILEVIRTUALPIXELMETHOD)
         ENUM_TO_NAME(CheckerTileVirtualPixelMethod)
-#endif
     }
 
     return "UndefinedVirtualPixelMethod";

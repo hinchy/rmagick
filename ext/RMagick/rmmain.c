@@ -1478,32 +1478,22 @@ Init_RMagick2(void)
     // VirtualPixelMethod
     DEF_ENUM(VirtualPixelMethod)
         ENUMERATOR(UndefinedVirtualPixelMethod)
-        ENUMERATOR(EdgeVirtualPixelMethod)
-        ENUMERATOR(MirrorVirtualPixelMethod)
-        ENUMERATOR(TileVirtualPixelMethod)
-        ENUMERATOR(TransparentVirtualPixelMethod)
         ENUMERATOR(BackgroundVirtualPixelMethod)
         ENUMERATOR(DitherVirtualPixelMethod)
+        ENUMERATOR(EdgeVirtualPixelMethod)
+        ENUMERATOR(MirrorVirtualPixelMethod)
         ENUMERATOR(RandomVirtualPixelMethod)
+        ENUMERATOR(TileVirtualPixelMethod)
+        ENUMERATOR(TransparentVirtualPixelMethod)
         ENUMERATOR(MaskVirtualPixelMethod)
         ENUMERATOR(BlackVirtualPixelMethod)
         ENUMERATOR(GrayVirtualPixelMethod)
         ENUMERATOR(WhiteVirtualPixelMethod)
-#if defined(HAVE_ENUM_HORIZONTALTILEVIRTUALPIXELMETHOD)
         ENUMERATOR(HorizontalTileVirtualPixelMethod)
-#endif
-#if defined(HAVE_ENUM_VERTICALTILEVIRTUALPIXELMETHOD)
         ENUMERATOR(VerticalTileVirtualPixelMethod)
-#endif
-#if defined(HAVE_ENUM_HORIZONTALTILEEDGEVIRTUALPIXELMETHOD)
         ENUMERATOR(HorizontalTileEdgeVirtualPixelMethod)
-#endif
-#if defined(HAVE_ENUM_VERTICALTILEEDGEVIRTUALPIXELMETHOD)
         ENUMERATOR(VerticalTileEdgeVirtualPixelMethod)
-#endif
-#if defined(HAVE_ENUM_CHECKERTILEVIRTUALPIXELMETHOD)
         ENUMERATOR(CheckerTileVirtualPixelMethod)
-#endif
     END_ENUM
     // WeightType constants
     DEF_ENUM(WeightType)
