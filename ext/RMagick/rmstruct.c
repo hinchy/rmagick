@@ -369,7 +369,7 @@ Color_to_s(VALUE self)
     Export_ColorInfo(&ci, self);
 
     sprintf(buff, "name=%s, compliance=%s, "
-#if (MAGICKCORE_QUANTUM_DEPTH  == 32 || MAGICKCORE_QUANTUM_DEPTH  == 64) && defined(HAVE_TYPE_LONG_DOUBLE)
+#if (MAGICKCORE_QUANTUM_DEPTH  == 32 || MAGICKCORE_QUANTUM_DEPTH  == 64)
                   "color.red=%Lg, color.green=%Lg, color.blue=%Lg, color.alpha=%Lg ",
 #else
                   "color.red=%g, color.green=%g, color.blue=%g, color.alpha=%g ",

@@ -342,9 +342,7 @@ EXTERN VALUE Class_CompressionType;
 EXTERN VALUE Class_DecorationType;
 EXTERN VALUE Class_DisposeType;
 EXTERN VALUE Class_DistortMethod;
-#if defined(HAVE_TYPE_DITHERMETHOD)
 EXTERN VALUE Class_DitherMethod;
-#endif
 EXTERN VALUE Class_EndianType;
 EXTERN VALUE Class_FilterType;
 EXTERN VALUE Class_GravityType;

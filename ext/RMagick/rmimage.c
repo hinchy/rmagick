@@ -10559,12 +10559,10 @@ Image_quantize(int argc, VALUE *argv, VALUE self)
         case 4:
             quantize_info.tree_depth = NUM2UINT(argv[3]);
         case 3:
-#if defined(HAVE_TYPE_DITHERMETHOD) && defined(HAVE_ENUM_NODITHERMETHOD)
             if (rb_obj_is_kind_of(argv[2], Class_DitherMethod))
             {
                 VALUE_TO_ENUM(argv[2], quantize_info.dither_method, DitherMethod);
             }
-#endif
         case 2:
             VALUE_TO_ENUM(argv[1], quantize_info.colorspace, ColorspaceType);
         case 1:
