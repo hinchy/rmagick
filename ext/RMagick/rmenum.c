@@ -653,8 +653,12 @@ CompressionType_name(CompressionType ct)
         ENUM_TO_NAME(RLECompression)
         ENUM_TO_NAME(ZipCompression)
         ENUM_TO_NAME(ZipSCompression)
+#if defined(HAVE_ENUM_ZSTDCOMPRESSION)
         ENUM_TO_NAME(ZstdCompression)
+#endif
+#if defined(HAVE_ENUM_WEBPCOMPRESSION)
         ENUM_TO_NAME(WebPCompression)
+#endif
     }
 
     return "UndefinedCompression";

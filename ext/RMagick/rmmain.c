@@ -1099,8 +1099,12 @@ Init_RMagick2(void)
         ENUMERATOR(RLECompression)
         ENUMERATOR(ZipCompression)
         ENUMERATOR(ZipSCompression)
+#if defined(HAVE_ENUM_ZSTDCOMPRESSION)
         ENUMERATOR(ZstdCompression)
+#endif
+#if defined(HAVE_ENUM_WEBPCOMPRESSION)
         ENUMERATOR(WebPCompression)
+#endif
     END_ENUM
 
     // DecorationType constants
@@ -1464,7 +1468,9 @@ Init_RMagick2(void)
         ENUMERATOR(ItalicStyle)
         ENUMERATOR(ObliqueStyle)
         ENUMERATOR(AnyStyle)
+#if defined(HAVE_ENUM_BOLDSTYLE)
         ENUMERATOR(BoldStyle)
+#endif
     END_ENUM
 
     // VirtualPixelMethod

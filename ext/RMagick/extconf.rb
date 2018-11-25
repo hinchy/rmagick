@@ -332,6 +332,10 @@ END_MSWIN
     end
 
     def create_header_file
+      have_enum_values('StyleType', ['BoldStyle'], headers) # 7.0.8
+      have_enum_values('CompressionType', ['ZstdCompression', # 7.0.8
+                                           'WebPCompression'], headers) # 7.0.8
+
       headers = ['ruby.h', 'ruby/io.h']
 
       # Miscellaneous constants

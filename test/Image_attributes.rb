@@ -285,8 +285,12 @@ class Image_Attributes_UT < Test::Unit::TestCase
     assert_nothing_raised { @img.compression = Magick::RLECompression }
     assert_nothing_raised { @img.compression = Magick::ZipCompression }
     assert_nothing_raised { @img.compression = Magick::ZipSCompression }
-    assert_nothing_raised { @img.compression = Magick::ZstdCompression }
-    assert_nothing_raised { @img.compression = Magick::WebPCompression }
+    if defined?(Magick::ZstdCompression)
+      assert_nothing_raised { @img.compression = Magick::ZstdCompression }
+    end
+    if defined?(Magick::WebPCompression)
+      assert_nothing_raised { @img.compression = Magick::WebPCompression }
+    end
     assert_raise(TypeError) { @img.compression = 2 }
   end
 
