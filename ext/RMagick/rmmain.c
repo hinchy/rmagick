@@ -1086,40 +1086,29 @@ Init_RMagick2(void)
     // CompressionType constants
     DEF_ENUM(CompressionType)
         ENUMERATOR(UndefinedCompression)
-        ENUMERATOR(NoCompression)
-#if defined(HAVE_ENUM_B44COMPRESSION)
-        ENUMERATOR(B44Compression)
-#endif
-#if defined(HAVE_ENUM_B44ACOMPRESSION)
         ENUMERATOR(B44ACompression)
-#endif
+        ENUMERATOR(B44Compression)
         ENUMERATOR(BZipCompression)
-#if defined(HAVE_ENUM_DXT1COMPRESSION)
         ENUMERATOR(DXT1Compression)
-#endif
-#if defined(HAVE_ENUM_DXT3COMPRESSION)
         ENUMERATOR(DXT3Compression)
-#endif
-#if defined(HAVE_ENUM_DXT5COMPRESSION)
         ENUMERATOR(DXT5Compression)
-#endif
         ENUMERATOR(FaxCompression)
         ENUMERATOR(Group4Compression)
-        ENUMERATOR(JPEGCompression)
+        ENUMERATOR(JBIG1Compression)
+        ENUMERATOR(JBIG2Compression)
         ENUMERATOR(JPEG2000Compression)
+        ENUMERATOR(JPEGCompression)
         ENUMERATOR(LosslessJPEGCompression)
+        ENUMERATOR(LZMACompression)
         ENUMERATOR(LZWCompression)
-#if defined(HAVE_ENUM_PIZCOMPRESSION)
+        ENUMERATOR(NoCompression)
         ENUMERATOR(PizCompression)
-#endif
-#if defined(HAVE_ENUM_PXR24COMPRESSION)
         ENUMERATOR(Pxr24Compression)
-#endif
         ENUMERATOR(RLECompression)
         ENUMERATOR(ZipCompression)
-#if defined(HAVE_ENUM_ZIPSCOMPRESSION)
         ENUMERATOR(ZipSCompression)
-#endif
+        ENUMERATOR(ZstdCompression)
+        ENUMERATOR(WebPCompression)
     END_ENUM
 
     // DecorationType constants
