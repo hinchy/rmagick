@@ -13768,7 +13768,7 @@ Image_total_ink_density(VALUE self)
     exception = AcquireExceptionInfo();
     image = rm_check_destroyed(self);
     density = GetImageTotalInkDensity(image, exception);
-    rm_check_image_exception(image, RetainOnError);
+    rm_check_exception(exception, image, RetainOnError);
     (void) DestroyExceptionInfo(exception);
 
     return rb_float_new(density);
@@ -15330,7 +15330,7 @@ xform_image(int bang, VALUE self, VALUE x, VALUE y, VALUE width, VALUE height, x
     new_image = (xformer)(image, &rect, exception);
 
     // An exception can occur in either the old or the new images
-    rm_check_image_exception(image, RetainOnError);
+    rm_check_exception(exception, image, RetainOnError);
     rm_check_exception(exception, new_image, DestroyOnError);
 
     (void) DestroyExceptionInfo(exception);
