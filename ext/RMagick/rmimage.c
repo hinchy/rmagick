@@ -9977,6 +9977,11 @@ Image_pixel_color(int argc, VALUE *argv, VALUE self)
         old_color = GetVirtualPixels(image, x, y, 1, 1, exception);
         rm_check_exception(exception, image, RetainOnError);
         (void) DestroyExceptionInfo(exception);
+        if (image->alpha_trait != UndefinedPixelTrait)
+        {
+            SetPixelAlpha(image, OpaqueAlpha, (Quantum *)old_color);
+        }
+
         return Pixel_from_Quantum(image, old_color);
     }
 
@@ -10007,6 +10012,10 @@ Image_pixel_color(int argc, VALUE *argv, VALUE self)
     if (pixel)
     {
         old_color_pixel = Pixel_from_Quantum(image, pixel);
+        if (image->alpha_trait != UndefinedPixelTrait)
+        {
+            SetPixelAlpha(image, OpaqueAlpha, (Quantum *)old_color_pixel);
+        }
     }
 
     SetPixelRed(image, new_color.red, pixel);
@@ -14814,6 +14823,7 @@ Image_wet_floor(int argc, VALUE *argv, VALUE self)
     reflection = CropImage(flip_image, &geometry, exception);
     rm_check_exception(exception, flip_image, RetainOnError);
 
+    reflection->alpha_trait = BlendPixelTrait;
     (void) SetImageStorageClass(reflection, DirectClass, exception);
     rm_check_exception(exception, reflection, DestroyOnError);
 
