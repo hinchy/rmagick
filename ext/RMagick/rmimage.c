@@ -10776,6 +10776,11 @@ rd_image(VALUE class, VALUE file, reader_t reader)
     Image *images;
     ExceptionInfo *exception;
 
+    if (NIL_P(file))
+    {
+        rb_raise(Class_ImageMagickError, "unable to open image nil");
+    }
+
     class = class;  // defeat gcc message
 
     // Create a new Info structure for this read/ping
