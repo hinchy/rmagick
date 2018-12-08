@@ -19,7 +19,7 @@ before_install:
 
 install: bundle install --verbose
 
-script: rake test
+script: rake
 
 rvm:
   - 2.3
