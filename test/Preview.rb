@@ -28,7 +28,7 @@ class PreviewUT < Test::Unit::TestCase
       Magick::SpreadPreview,
       Magick::SolarizePreview,
       Magick::ShadePreview,
-      Magick::RaisePreview,
+      # Magick::RaisePreview,
       Magick::SegmentPreview,
       Magick::SwirlPreview,
       Magick::ImplodePreview,
