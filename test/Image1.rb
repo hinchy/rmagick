@@ -163,7 +163,7 @@ class Image1_UT < Test::Unit::TestCase
     assert !@img.alpha?
     assert_nothing_raised { @img.alpha Magick::ActivateAlphaChannel }
     assert @img.alpha?
-    assert_nothing_raised { @img.alpha Magick::DeactivateAlphaChannel }
+    assert_nothing_raised { @img.alpha Magick::DisassociateAlphaChannel }
     assert !@img.alpha?
     assert_nothing_raised { @img.alpha Magick::SetAlphaChannel }
     @img.freeze

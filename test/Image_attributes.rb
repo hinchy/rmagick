@@ -26,7 +26,7 @@ class Image_Attributes_UT < Test::Unit::TestCase
   # Test old alpha attribute. New alpha() behavior is tested in Image1.rb
   def test_alpha
     assert(@img.alpha)
-    assert_nothing_raised { @img.alpha = Magick::DeactivateAlphaChannel }
+    assert_nothing_raised { @img.alpha = Magick::DisassociateAlphaChannel }
     assert(!@img.alpha)
   end
 

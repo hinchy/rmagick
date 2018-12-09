@@ -8636,7 +8636,7 @@ Image_matte_eq(VALUE self, VALUE matte)
     }
     else
     {
-        alpha_channel_type = rb_const_get(Module_Magick, rb_intern("DeactivateAlphaChannel"));
+        alpha_channel_type = rb_const_get(Module_Magick, rb_intern("DisassociateAlphaChannel"));
     }
 
     return Image_alpha_eq(self, alpha_channel_type);
