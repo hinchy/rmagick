@@ -845,7 +845,7 @@ class Image3_UT < Test::Unit::TestCase
     red = Magick::Pixel.new(Magick::QuantumRange)
     assert_nothing_raised do
       res = @img.to_color(red)
-      assert_equal('red', res)
+      assert_equal('#FF0000', res)
     end
   end
 
