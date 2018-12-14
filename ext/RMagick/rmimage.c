@@ -7228,12 +7228,22 @@ has_attribute(VALUE self, MagickBooleanType (attr_test)(const Image *, Exception
  *
  * @param self this object
  * @return true if image is gray, false otherwise
- * @see has_attribute
  */
 VALUE
 Image_gray_q(VALUE self)
 {
-    return has_attribute(self, (MagickBooleanType (*)(const Image *, ExceptionInfo *))IsImageGray);
+    Image *image;
+    ExceptionInfo *exception;
+    ColorspaceType colorspace;
+
+    image = rm_check_destroyed(self);
+    exception = AcquireExceptionInfo();
+
+    colorspace = GetImageColorspaceType(image, exception);
+    CHECK_EXCEPTION()
+    (void) DestroyExceptionInfo(exception);
+
+    return colorspace == GRAYColorspace ? Qtrue : Qfalse;
 }
 
 
