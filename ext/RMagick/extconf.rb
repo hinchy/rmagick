@@ -131,22 +131,22 @@ module RMagick
 
       elsif RUBY_PLATFORM =~ /mingw/ # mingw
 
-        `identify -version` =~ /Version: ImageMagick (\d+\.\d+\.\d+)-+\d+ /
+        `magick -version` =~ /Version: ImageMagick (\d+\.\d+\.\d+)-+\d+ /
         abort 'Unable to get ImageMagick version' unless Regexp.last_match(1)
         $magick_version = Regexp.last_match(1)
-        search_paths_for_library_for_mingw unless have_library('CORE_RL_magick_')
+        search_paths_for_library_for_mingw unless have_library('CORE_RL_MagickCore_')
         have_library('X11')
 
       else # mswin
 
-        `identify -version` =~ /Version: ImageMagick (\d+\.\d+\.\d+)-+\d+ /
+        `magick -version` =~ /Version: ImageMagick (\d+\.\d+\.\d+)-+\d+ /
         abort 'Unable to get ImageMagick version' unless Regexp.last_match(1)
         $magick_version = Regexp.last_match(1)
         $CFLAGS = '-W3'
         $CPPFLAGS = %(-I"C:\\Program Files\\Microsoft Platform SDK for Windows Server 2003 R2\\Include" -I"C:\\Program Files\\ImageMagick-#{$magick_version}-Q8\\include")
         # The /link option is required by the Makefile but causes warnings in the mkmf.log file.
         $LDFLAGS = %(/link /LIBPATH:"C:\\Program Files\\Microsoft Platform SDK for Windows Server 2003 R2\\Lib" /LIBPATH:"C:\\Program Files\\ImageMagick-#{$magick_version}-Q8\\lib" /LIBPATH:"C:\\ruby\\lib")
-        $LOCAL_LIBS = 'CORE_RL_magick_.lib'
+        $LOCAL_LIBS = 'CORE_RL_MagickCore_.lib'
         have_library('X11')
 
       end
@@ -268,12 +268,12 @@ SRC
       paths = ENV['PATH'].split(File::PATH_SEPARATOR)
       paths.each do |dir|
         lib = File.join(dir, 'lib')
-        lib_file = File.join(lib, 'CORE_RL_magick_.lib')
+        lib_file = File.join(lib, 'CORE_RL_MagickCore_.lib')
         next unless File.exist?(lib_file)
 
         $CPPFLAGS = %(-I"#{File.join(dir, 'include')}")
         $LDFLAGS = %(-L"#{lib}")
-        found_lib = have_library('CORE_RL_magick_')
+        found_lib = have_library('CORE_RL_MagickCore_')
         break if found_lib
       end
 
@@ -285,7 +285,7 @@ Can't find the ImageMagick library.
 Retry with '--with-opt-dir' option.
 Usage: gem install rmagick -- '--with-opt-dir=\"[path to ImageMagick]\"'
 e.g.
-  gem install rmagick -- '--with-opt-dir=\"C:\Program Files\ImageMagick-6.9.1-Q16\"'
+  gem install rmagick -- '--with-opt-dir=\"C:\Program Files\ImageMagick-7.0.8-Q16\"'
 END_MINGW
     end
 
