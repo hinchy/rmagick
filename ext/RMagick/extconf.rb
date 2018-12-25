@@ -47,7 +47,7 @@ module RMagick
     end
 
     def configure_compile_options
-      # Magick-config is not available on Windows
+      # MagickCore-config is not available on Windows
       if RUBY_PLATFORM !~ /mswin|mingw/
 
         # Check for compiler. Extract first word so ENV['CC'] can be a program name with arguments.
@@ -58,10 +58,10 @@ module RMagick
         # ugly way to handle which config tool we're going to use...
         $with_magick_wand = false
 
-        # Check for Magick-config
+        # Check for MagickCore-config
         $magick_version = RMagick::Config.version
         unless $magick_version
-          exit_failure "Can't install RMagick #{RMAGICK_VERS}. Can't find Magick-config or pkg-config in #{ENV['PATH']}\n"
+          exit_failure "Can't install RMagick #{RMAGICK_VERS}. Can't find MagickCore-config or pkg-config in #{ENV['PATH']}\n"
         end
 
         check_multiple_imagemagick_versions
@@ -139,7 +139,7 @@ SRC
     end
 
     def has_graphicsmagick_libmagick_dev_compat?
-      config_path = `which Magick-config`.chomp
+      config_path = `which MagickCore-config`.chomp
       if File.exist?(config_path) &&
          File.symlink?(config_path) &&
          File.readlink(config_path) =~ /GraphicsMagick/
@@ -163,7 +163,7 @@ SRC
       versions = []
       path = ENV['PATH'].split(File::PATH_SEPARATOR)
       path.each do |dir|
-        file = File.join(dir, 'Magick-config')
+        file = File.join(dir, 'MagickCore-config')
         next unless File.executable? file
 
         vers = `#{file} --version`.chomp.strip
@@ -175,7 +175,7 @@ SRC
 
       msg = "\nWarning: Found more than one ImageMagick installation. This could cause problems at runtime.\n"
       versions.each do |vers, prefix, dir|
-        msg << "         #{dir}/Magick-config reports version #{vers} is installed in #{prefix}\n"
+        msg << "         #{dir}/MagickCore-config reports version #{vers} is installed in #{prefix}\n"
       end
       msg << "Using #{versions[0][0]} from #{versions[0][1]}.\n\n"
       Logging.message msg
@@ -191,7 +191,7 @@ SRC
       matches = [
         prefix + '/lib/lib?agick*',
         prefix + '/include/ImageMagick',
-        prefix + '/bin/Magick-config'
+        prefix + '/bin/MagickCore-config'
       ].map do |file_glob|
         Dir.glob(file_glob)
       end
@@ -207,7 +207,7 @@ SRC
     # set ARCHFLAGS appropriately for OSX
     def set_archflags_for_osx
       archflags = []
-      fullpath = `which convert`
+      fullpath = `which magick`
       fileinfo = `file #{fullpath}`
 
       # default ARCHFLAGS
@@ -283,7 +283,6 @@ END_MSWIN
     def assert_has_dev_libs!
       return unless RUBY_PLATFORM !~ /mswin|mingw/
 
-      # check for pkg-config if Magick-config doesn't exist
       if RMagick::Config.libs.include?('MagickCore')
       else
         exit_failure "Can't install RMagick #{RMAGICK_VERS}. " \
