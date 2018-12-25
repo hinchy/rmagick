@@ -3,6 +3,7 @@ $LOAD_PATH.unshift(lib_dir) unless $LOAD_PATH.include?(lib_dir)
 require 'rubygems'
 require 'mkmf'
 require 'date'
+require 'pkg-config'
 
 module RMagick
   class Extconf
@@ -21,9 +22,7 @@ module RMagick
 
     def configured_compile_options
       {
-        magick_config: $magick_config,
         with_magick_wand: $with_magick_wand,
-        pkg_config: $pkg_config,
         magick_version: $magick_version,
         local_libs: $LOCAL_LIBS,
         cflags: $CFLAGS,
@@ -58,17 +57,10 @@ module RMagick
 
         # ugly way to handle which config tool we're going to use...
         $with_magick_wand = false
-        $magick_config = false
-        $pkg_config = false
 
         # Check for Magick-config
-        if find_executable('pkg-config')
-          $pkg_config = true
-          $magick_version = `pkg-config MagickCore --modversion`[/^(\d+\.\d+\.\d+)/]
-        elsif find_executable('Magick-config') && !has_graphicsmagick_libmagick_dev_compat?
-          $magick_config = true
-          $magick_version = `Magick-config --version`[/^(\d+\.\d+\.\d+)/]
-        else
+        $magick_version = RMagick::Config.version
+        unless $magick_version
           exit_failure "Can't install RMagick #{RMAGICK_VERS}. Can't find Magick-config or pkg-config in #{ENV['PATH']}\n"
         end
 
@@ -92,40 +84,10 @@ module RMagick
           true
         end
 
-        # either set flags using Magick-config, MagickWand-config or pkg-config (new Debian default)
-        if $with_magick_wand
-          if $magick_config
-            # Save flags
-            $CFLAGS = ENV['CFLAGS'].to_s + ' ' + `MagickWand-config --cflags`.chomp
-            $CPPFLAGS = ENV['CPPFLAGS'].to_s + ' ' + `MagickWand-config --cppflags`.chomp
-            $LDFLAGS = ENV['LDFLAGS'].to_s + ' ' + `MagickWand-config --ldflags`.chomp
-            $LOCAL_LIBS = ENV['LIBS'].to_s + ' ' + `MagickWand-config --libs`.chomp
-          end
-
-          if $pkg_config
-            # Save flags
-            $CFLAGS = ENV['CFLAGS'].to_s + ' ' + `pkg-config --cflags MagickWand`.chomp
-            $CPPFLAGS = ENV['CPPFLAGS'].to_s + ' ' + `pkg-config --cflags MagickWand`.chomp
-            $LDFLAGS = ENV['LDFLAGS'].to_s + ' ' + `pkg-config --libs MagickWand`.chomp
-            $LOCAL_LIBS = ENV['LIBS'].to_s + ' ' + `pkg-config --libs MagickWand`.chomp
-          end
-        else
-          if $magick_config
-            # Save flags
-            $CFLAGS = ENV['CFLAGS'].to_s + ' ' + `Magick-config --cflags`.chomp
-            $CPPFLAGS = ENV['CPPFLAGS'].to_s + ' ' + `Magick-config --cppflags`.chomp
-            $LDFLAGS = ENV['LDFLAGS'].to_s + ' ' + `Magick-config --ldflags`.chomp
-            $LOCAL_LIBS = ENV['LIBS'].to_s + ' ' + `Magick-config --libs`.chomp
-          end
-
-          if $pkg_config
-            # Save flags
-            $CFLAGS = ENV['CFLAGS'].to_s + ' ' + `pkg-config --cflags MagickCore`.chomp
-            $CPPFLAGS = ENV['CPPFLAGS'].to_s + ' ' + `pkg-config --cflags MagickCore`.chomp
-            $LDFLAGS = ENV['LDFLAGS'].to_s + ' ' + `pkg-config --libs MagickCore`.chomp
-            $LOCAL_LIBS = ENV['LIBS'].to_s + ' ' + `pkg-config --libs MagickCore`.chomp
-          end
-        end
+        $CFLAGS = ENV['CFLAGS'].to_s + ' ' + RMagick::Config.cflags
+        $CPPFLAGS = ENV['CPPFLAGS'].to_s + ' ' + RMagick::Config.cflags
+        $LDFLAGS = ENV['LDFLAGS'].to_s + ' ' + RMagick::Config.libs
+        $LOCAL_LIBS = ENV['LIBS'].to_s + ' ' + RMagick::Config.libs
 
         set_archflags_for_osx if RUBY_PLATFORM =~ /darwin/ # osx
 
@@ -322,8 +284,7 @@ END_MSWIN
       return unless RUBY_PLATFORM !~ /mswin|mingw/
 
       # check for pkg-config if Magick-config doesn't exist
-      if $magick_config && `Magick-config --libs`[/\bl\s*(MagickCore|Magick)7?\b/]
-      elsif $pkg_config && `pkg-config --libs MagickCore`[/\bl\s*(MagickCore|Magick)7?\b/]
+      if RMagick::Config.libs.include?('MagickCore')
       else
         exit_failure "Can't install RMagick #{RMAGICK_VERS}. " \
                    "Can't find the ImageMagick library or one of the dependent libraries. " \
@@ -373,6 +334,38 @@ END_SUMMARY
 
       Logging.message summary
       message summary
+    end
+  end
+
+  module Config
+    module_function
+
+    def pkg_config?
+      @@exist_native_pkg_config ||= find_executable('pkg-config')
+    end
+
+    def version
+      if self.pkg_config?
+        `pkg-config MagickCore --modversion`[/^(\d+\.\d+\.\d+)/]
+      else
+        PKGConfig.modversion('MagickCore')[/^(\d+\.\d+\.\d+)/]
+      end
+    end
+
+    def cflags
+      if self.pkg_config?
+        `pkg-config --cflags MagickCore`.chomp
+      else
+        PKGConfig.cflags('MagickCore').chomp
+      end
+    end
+
+    def libs
+      if self.pkg_config?
+        `pkg-config --libs MagickCore`.chomp
+      else
+        PKGConfig.libs('MagickCore').chomp
+      end
     end
   end
 end

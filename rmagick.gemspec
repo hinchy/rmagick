@@ -30,6 +30,8 @@ Gem::Specification.new do |s|
   s.required_ruby_version = ">= #{Magick::MIN_RUBY_VERSION}"
   s.requirements << "ImageMagick #{Magick::MIN_IM_VERSION} or later"
 
+  s.add_runtime_dependency("pkg-config")
+
   s.add_development_dependency 'rake-compiler'
   s.add_development_dependency 'rspec', '~> 3'
   s.add_development_dependency 'rspec_junit_formatter', '~> 0.4.1'
