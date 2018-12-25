@@ -6,7 +6,7 @@ sudo apt-get autoremove -y imagemagick* libmagick* --purge
 # install build tools, ImageMagick delegates
 sudo apt-get install -y build-essential libx11-dev libxext-dev zlib1g-dev \
   liblcms2-dev libpng-dev libjpeg-dev libfreetype6-dev libxml2-dev \
-  libtiff5-dev vim ghostscript ccache
+  libtiff5-dev libwebp-dev vim ghostscript ccache
 
 case $IMAGEMAGICK_VERSION in
     latest)
