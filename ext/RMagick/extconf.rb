@@ -22,7 +22,6 @@ module RMagick
 
     def configured_compile_options
       {
-        with_magick_wand: $with_magick_wand,
         magick_version: $magick_version,
         local_libs: $LOCAL_LIBS,
         cflags: $CFLAGS,
@@ -55,9 +54,6 @@ module RMagick
         cc = (ENV['CC'] || config::CONFIG['CC'] || 'gcc').split(' ').first
         exit_failure "No C compiler found in ${ENV['PATH']}. See mkmf.log for details." unless find_executable(cc)
 
-        # ugly way to handle which config tool we're going to use...
-        $with_magick_wand = false
-
         # Check for MagickCore-config
         $magick_version = RMagick::Config.version
         unless $magick_version
@@ -73,14 +69,6 @@ module RMagick
           Logging.message("Detected ImageMagick version: #{$magick_version}\n")
 
           exit_failure "Can't install RMagick #{RMAGICK_VERS}. You must have ImageMagick #{Magick::MIN_IM_VERSION} or later.\n" if Gem::Version.new($magick_version) < Gem::Version.new(Magick::MIN_IM_VERSION)
-          true
-        end
-
-        # From ImageMagick 6.9 binaries are split to two and we have to use
-        # MagickWand instead of MagickCore
-        checking_for("presence of MagickWand API (ImageMagick version >= #{Magick::MIN_WAND_VERSION})") do
-          $with_magick_wand = Gem::Version.new($magick_version) >= Gem::Version.new(Magick::MIN_WAND_VERSION)
-          exit_failure "Older version detected." unless $with_magick_wand
           true
         end
 
