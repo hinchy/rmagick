@@ -400,10 +400,10 @@ Pixel_fcmp(int argc, VALUE *argv, VALUE self)
     Data_Get_Struct(self, Pixel, this);
     Data_Get_Struct(argv[0], Pixel, that);
 
-    this->colorspace = colorspace;
-    this->fuzz = fuzz;
+    this->colorspace = that->colorspace = colorspace;
+    this->fuzz = that->fuzz = fuzz;
 
-    equal = IsFuzzyEquivalencePixelInfo(that, this);
+    equal = IsFuzzyEquivalencePixelInfo(this, that);
 
     return equal ? Qtrue : Qfalse;
 }
