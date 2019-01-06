@@ -331,7 +331,9 @@ Color_to_PixelInfoWithImage(Image *image, PixelInfo *mpp, VALUE color)
     mpp->red = (MagickRealType) pp.red;
     mpp->green = (MagickRealType) pp.green;
     mpp->blue = (MagickRealType) pp.blue;
+    mpp->black = (MagickRealType) pp.black;
     mpp->alpha = (MagickRealType) pp.alpha;
+    mpp->index = (MagickRealType) pp.index;
 }
 
 

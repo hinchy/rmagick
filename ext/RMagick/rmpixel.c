@@ -601,7 +601,9 @@ Pixel_from_PixelInfo(const PixelInfo *pp)
     pixel->red     = ROUND_TO_QUANTUM(pp->red);
     pixel->green   = ROUND_TO_QUANTUM(pp->green);
     pixel->blue    = ROUND_TO_QUANTUM(pp->blue);
+    pixel->black   = ROUND_TO_QUANTUM(pp->black);
     pixel->alpha   = ROUND_TO_QUANTUM(pp->alpha);
+    pixel->index   = ROUND_TO_QUANTUM(pp->index);
 
     return Data_Wrap_Struct(Class_Pixel, NULL, destroy_Pixel, pixel);
 }
@@ -623,7 +625,9 @@ Pixel_from_Quantum(Image *image, const Quantum *quantum)
     pixel->red     = GetPixelRed(image, quantum);
     pixel->green   = GetPixelGreen(image, quantum);
     pixel->blue    = GetPixelBlue(image, quantum);
+    pixel->black   = GetPixelBlack(image, quantum);
     pixel->alpha   = GetPixelAlpha(image, quantum);
+    pixel->index   = GetPixelIndex(image, quantum);
 
     return Data_Wrap_Struct(Class_Pixel, NULL, destroy_Pixel, pixel);
 }
