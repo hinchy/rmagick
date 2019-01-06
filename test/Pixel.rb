@@ -69,7 +69,10 @@ class PixelUT < Test::Unit::TestCase
             # hsla[0] = ((hsla[0] + 0.005) % 360.0) - 0.005
             # hsla[1] = ((hsla[1] + 0.005) % 360.0) - 0.005
             # hsla[2] = ((hsla[2] + 0.005) % 360.0) - 0.005
-            assert_in_delta(args[0], hsla[0], 0.25, "expected #{args.inspect} got #{hsla.inspect}")
+            if IM_VERSION >= Gem::Version.new('7.0.8')
+              # Seems ImageMagick v7.0.7 returns wrong value
+              assert_in_delta(args[0], hsla[0], 0.25, "expected #{args.inspect} got #{hsla.inspect}")
+            end
             assert_in_delta(args[1], hsla[1], 0.25, "expected #{args.inspect} got #{hsla.inspect}")
             assert_in_delta(args[2], hsla[2], 0.25, "expected #{args.inspect} got #{hsla.inspect}")
             # assert_in_delta(args[3], hsla[3], 0.005, "expected #{args.inspect} got #{hsla.inspect}")
