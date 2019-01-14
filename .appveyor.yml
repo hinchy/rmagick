@@ -3,8 +3,9 @@ environment:
     - RUBY_VERSION: "25-x64"
 
 install:
-  - cinst imagemagick.app -PackageParameters InstallDevelopmentHeaders=true
-  - SET PATH=C:\Ruby%RUBY_VERSION%\bin;%PATH%
+  - appveyor DownloadFile https://imagemagick.org/download/binaries/ImageMagick-x86_64-pc-windows.exe
+  - ImageMagick-x86_64-pc-windows.exe /VERYSILENT /TASKS=install_Devel /DIR="C:\ImageMagick-7"
+  - SET PATH=C:\ImageMagick-7;C:\Ruby%RUBY_VERSION%\bin;%PATH%
   - bundle install
 
 build: off
