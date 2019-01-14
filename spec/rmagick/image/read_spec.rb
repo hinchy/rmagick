@@ -1,5 +1,7 @@
 require 'timeout'
 
+if !(RUBY_PLATFORM =~/mingw/i) # skip the test on Windows
+
 RSpec.describe Magick::Image, '#read' do
   describe 'issue #200' do
     before do
@@ -25,4 +27,6 @@ RSpec.describe Magick::Image, '#read' do
       expect { Magick::Image.read(nil) }.to raise_error(Magick::ImageMagickError, /unable to open image nil/)
     end
   end
+end
+
 end
