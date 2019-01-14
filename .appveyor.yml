@@ -1,0 +1,19 @@
+environment:
+  matrix:
+    - RUBY_VERSION: "25-x64"
+
+install:
+  - cinst imagemagick.app -PackageParameters InstallDevelopmentHeaders=true
+  - SET PATH=C:\Ruby%RUBY_VERSION%\bin;%PATH%
+  - bundle install
+
+build: off
+
+before_test:
+  - magick --version
+  - ruby -v
+  - gem -v
+  - bundle -v
+
+test_script:
+  - rake -rdevkit

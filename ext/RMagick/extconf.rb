@@ -84,7 +84,7 @@ module RMagick
         `magick -version` =~ /Version: ImageMagick (\d+\.\d+\.\d+)-+\d+ /
         abort 'Unable to get ImageMagick version' unless Regexp.last_match(1)
         $magick_version = Regexp.last_match(1)
-        search_paths_for_library_for_mingw unless have_library('CORE_RL_MagickCore_')
+        search_paths_for_library_for_mingw
         have_library('X11')
 
       else # mswin
