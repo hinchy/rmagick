@@ -230,8 +230,8 @@ SRC
         dir_paths[:include] = File.join(dir, 'include')
         dir_paths[:lib] = lib
 
-        found_lib = have_library('CORE_RL_MagickCore_')
-        break if found_lib
+        found_lib = true
+        break
       end
 
       return dir_paths if found_lib
@@ -247,23 +247,8 @@ END_MINGW
     end
 
     def assert_can_compile!
-      assert_not_windows!
       assert_minimum_ruby_version!
       assert_has_dev_libs!
-    end
-
-    def assert_not_windows!
-      return unless RUBY_PLATFORM =~ /mswin/
-
-      abort <<END_MSWIN
-+----------------------------------------------------------------------------+
-| This rmagick gem is for use only on Linux, BSD, OS X, and similar systems  |
-| that have a gnu or similar toolchain installed. The rmagick-win32 gem is a |
-| pre-compiled version of RMagick bundled with ImageMagick for use on        |
-| Microsoft Windows systems. The rmagick-win32 gem is available on RubyForge.|
-| See http://rmagick.rubyforge.org/install-faq.html for more information.    |
-+----------------------------------------------------------------------------+
-END_MSWIN
     end
 
     def assert_minimum_ruby_version!
