@@ -84,7 +84,11 @@ module RMagick
         `magick -version` =~ /Version: ImageMagick (\d+\.\d+\.\d+)-+\d+ /
         abort 'Unable to get ImageMagick version' unless Regexp.last_match(1)
         $magick_version = Regexp.last_match(1)
-        search_paths_for_library_for_mingw
+
+        dir_paths = search_paths_for_library_for_windows
+        $CPPFLAGS = %(-I"#{dir_paths[:include]}")
+        $LDFLAGS = %(-L"#{dir_paths[:lib]}")
+
         have_library('X11')
 
       else # mswin
@@ -92,10 +96,11 @@ module RMagick
         `magick -version` =~ /Version: ImageMagick (\d+\.\d+\.\d+)-+\d+ /
         abort 'Unable to get ImageMagick version' unless Regexp.last_match(1)
         $magick_version = Regexp.last_match(1)
-        $CFLAGS = '-W3'
-        $CPPFLAGS = %(-I"C:\\Program Files\\Microsoft Platform SDK for Windows Server 2003 R2\\Include" -I"C:\\Program Files\\ImageMagick-#{$magick_version}-Q8\\include")
-        # The /link option is required by the Makefile but causes warnings in the mkmf.log file.
-        $LDFLAGS = %(/link /LIBPATH:"C:\\Program Files\\Microsoft Platform SDK for Windows Server 2003 R2\\Lib" /LIBPATH:"C:\\Program Files\\ImageMagick-#{$magick_version}-Q8\\lib" /LIBPATH:"C:\\ruby\\lib")
+
+        dir_paths = search_paths_for_library_for_windows
+        $CPPFLAGS << %( -I"#{dir_paths[:include]}")
+        $LDFLAGS << %( -libpath:"#{dir_paths[:lib]}")
+
         $LOCAL_LIBS = 'CORE_RL_MagickCore_.lib'
         have_library('X11')
 
@@ -208,12 +213,13 @@ SRC
       $ARCH_FLAG = archflags.join(' ') unless archflags.empty?
     end
 
-    def search_paths_for_library_for_mingw
+    def search_paths_for_library_for_windows
       msg = 'searching PATH for the ImageMagick library...'
       Logging.message msg
       message msg + "\n"
 
       found_lib = false
+      dir_paths = {}
 
       paths = ENV['PATH'].split(File::PATH_SEPARATOR)
       paths.each do |dir|
@@ -221,13 +227,14 @@ SRC
         lib_file = File.join(lib, 'CORE_RL_MagickCore_.lib')
         next unless File.exist?(lib_file)
 
-        $CPPFLAGS = %(-I"#{File.join(dir, 'include')}")
-        $LDFLAGS = %(-L"#{lib}")
+        dir_paths[:include] = File.join(dir, 'include')
+        dir_paths[:lib] = lib
+
         found_lib = have_library('CORE_RL_MagickCore_')
         break if found_lib
       end
 
-      return if found_lib
+      return dir_paths if found_lib
 
       exit_failure <<END_MINGW
 Can't install RMagick #{RMAGICK_VERS}.
