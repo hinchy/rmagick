@@ -89,6 +89,7 @@ module RMagick
         $CPPFLAGS = %(-I"#{dir_paths[:include]}")
         $LDFLAGS = %(-L"#{dir_paths[:lib]}")
 
+        have_library('CORE_RL_MagickCore_')
         have_library('X11')
 
       else # mswin
