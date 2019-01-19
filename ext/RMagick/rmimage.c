@@ -3676,8 +3676,8 @@ composite_tiled(int bang, int argc, VALUE *argv, VALUE self)
     CompositeOperator operator = OverCompositeOp;
     long x, y;
     unsigned long columns;
-    ChannelType channels;
     MagickStatusType status;
+    ExceptionInfo *exception;
 
     // Ensure image and composite_image aren't destroyed.
     if (bang)
@@ -3694,7 +3694,7 @@ composite_tiled(int bang, int argc, VALUE *argv, VALUE self)
         comp_image = rm_check_destroyed(rm_cur_image(argv[0]));
     }
 
-    channels = extract_channels(&argc, argv);
+    extract_channels(&argc, argv);
 
     switch (argc)
     {
@@ -3720,16 +3720,19 @@ composite_tiled(int bang, int argc, VALUE *argv, VALUE self)
     status = MagickTrue;
     columns = comp_image->columns;
 
+    exception = AcquireExceptionInfo();
+
     // Tile
     for (y = 0; y < (long) image->rows; y += comp_image->rows)
     {
         for (x = 0; status == MagickTrue && x < (long) image->columns; x += columns)
         {
-            status = CompositeImageChannel(image, channels, operator, comp_image, x, y);
-            rm_check_image_exception(image, bang ? RetainOnError: DestroyOnError);
+            status = CompositeImage(image, comp_image, operator, MagickTrue, x, y, exception);
+            rm_check_exception(exception, image, bang ? RetainOnError: DestroyOnError);
         }
     }
 
+    (void) DestroyExceptionInfo(exception);
     return bang ? self : rm_image_new(image);
 }
 
