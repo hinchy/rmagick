@@ -311,12 +311,12 @@ Draw_font_weight_eq(VALUE self, VALUE weight)
 
     if (FIXNUM_P(weight))
     {
-        w = (WeightType) FIX2INT(weight);
-        if (w < 100 || w > 900)
+        size_t _w = FIX2INT(weight);
+        if (_w < 100 || _w > 900)
         {
-            rb_raise(rb_eArgError, "invalid font weight (%d given)", w);
+            rb_raise(rb_eArgError, "invalid font weight (%zu given)", _w);
         }
-        draw->info->weight = w;
+        draw->info->weight = _w;
     }
     else
     {
